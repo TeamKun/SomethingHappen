@@ -1,9 +1,6 @@
 package net.kunmc.lab.somethinghappen.happening;
 
-import net.kunmc.lab.somethinghappen.happening.logic.ChangeFootBlockHappening;
-import net.kunmc.lab.somethinghappen.happening.logic.FallEntityHappening;
-import net.kunmc.lab.somethinghappen.happening.logic.Happening;
-import net.kunmc.lab.somethinghappen.happening.logic.SpawnMobHappening;
+import net.kunmc.lab.somethinghappen.happening.logic.*;
 
 public class HappeningFactory {
     public static Happening createHappening(String name){
@@ -26,6 +23,23 @@ public class HappeningFactory {
             case HappeningConst.CHANGE_FOOT_BLOCK_RANDOM:
             case HappeningConst.CHANGE_FOOT_BLOCK_TNT:
                 happening = new ChangeFootBlockHappening(name);
+                break;
+            case HappeningConst.ADD_PLAYER_INVISIBLE:
+            case HappeningConst.ADD_PLAYER_BLINDNESS:
+            case HappeningConst.ADD_PLAYER_RANDOM_POTION:
+            case HappeningConst.ADD_PLAYER_POISON:
+            case HappeningConst.ADD_PLAYER_MOVE_SPEED_UP:
+            case HappeningConst.ADD_PLAYER_MINING_SPEED_UP:
+            case HappeningConst.ADD_PLAYER_JUMP_POWER_UP:
+                happening = new AddPlayerEffectHappening(name);
+                break;
+            case HappeningConst.UPGRADE_TOOL:
+            case HappeningConst.DOWNGRADE_TOOL:
+                happening = new ChangeToolHappening(name);
+                break;
+            case HappeningConst.CLEAR_HOTBAR_ITEM:
+            case HappeningConst.TRANS_HOTBAR_ITEM:
+                happening = new ChangeHotbarHappening(name);
                 break;
             default:
                 // TODO 何もしない出来事を返すようにしておくか検討
