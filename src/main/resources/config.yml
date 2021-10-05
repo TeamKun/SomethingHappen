@@ -1,6 +1,7 @@
 time: 10
 spawnMobNum: 10
 fallBlockNum: 2
+teleportRange: 300
 womanPlayer:
 nonbinaryPlayer:
 happening:
@@ -27,9 +28,9 @@ happening:
   - 'downgradeTool'
   - 'clearHotBarItem'
   - 'transHotBarItem'
-  - 'teleport'
-  - 'dieOnDirtOrNetherrack'
-  - 'changeDimension'
+  - 'teleportPlayer'
+  - 'changePlayerDimension'
+  - 'dieOnFootBlock'
   - 'beHpOne'
   - 'dieEveryOne'
   - 'dieRandomOne'

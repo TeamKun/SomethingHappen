@@ -4,16 +4,16 @@ import net.kunmc.lab.somethinghappen.Config;
 import net.kunmc.lab.somethinghappen.Somethinghappen;
 import net.kunmc.lab.somethinghappen.game.GameManager;
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
+import net.kunmc.lab.somethinghappen.happening.HappeningManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Fireball;
+import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+
+import java.util.List;
 
 /**
  * - 対応する事件
@@ -30,13 +30,12 @@ public class FallEntityHappening extends Happening {
         super(name);
     }
 
-    public void beginHappening() {
+    public void continueHappening() {
         task = new BukkitRunnable() {
             @Override
             public void run() {
-                // TODO: addしたユーザに変える
-                Bukkit.getOnlinePlayers().forEach(p -> {
-                    new BukkitRunnable() {
+               HappeningManager.getHappeningTargetPlayers().forEach(p -> {
+                   new BukkitRunnable() {
                         @Override
                         public void run() {
                             Location loc = p.getLocation();
@@ -79,7 +78,6 @@ public class FallEntityHappening extends Happening {
         }.runTaskTimerAsynchronously(Somethinghappen.getPlugin(), 0, 20);
     }
 
-    @Override
     public void endHappening() {
         task.cancel();
     }

@@ -3,16 +3,24 @@ package net.kunmc.lab.somethinghappen.happening.logic;
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
+import java.util.List;
+
+/**
+ * - 対応する事件
+ *   - 'clearHotBarItem'
+ *   - 'transHotBarItem'
+ */
 public class ChangeHotbarHappening extends Happening {
     public ChangeHotbarHappening(String name) {
         super(name);
     }
 
-    public void beginHappening() {
-        Bukkit.getOnlinePlayers().forEach(p -> {
+    public void beginHappening(List<Player> players) {
+        players.forEach(p -> {
             if (super.getName().equals(HappeningConst.CLEAR_HOTBAR_ITEM)) {
                 ItemStack air = new ItemStack(Material.AIR, 1);
                 for (int i = 0; i < 9; i++)

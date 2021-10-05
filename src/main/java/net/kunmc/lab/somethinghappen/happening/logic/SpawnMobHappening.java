@@ -6,6 +6,9 @@ import net.kunmc.lab.somethinghappen.happening.HappeningConst;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * - 対応する事件
@@ -20,9 +23,8 @@ public class SpawnMobHappening extends Happening{
         super(name);
     }
 
-    public void beginHappening() {
-        // TODO: addしたユーザに変える
-        Bukkit.getOnlinePlayers().forEach(p -> {
+    public void beginHappening(List<Player> players) {
+        players.forEach(p -> {
             Location loc = p.getLocation();
             double x = loc.getX();
             double y = loc.getY() + 3;

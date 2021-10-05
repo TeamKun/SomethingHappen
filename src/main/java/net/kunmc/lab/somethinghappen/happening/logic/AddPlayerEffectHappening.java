@@ -4,8 +4,8 @@ import net.kunmc.lab.somethinghappen.Config;
 import net.kunmc.lab.somethinghappen.game.GameManager;
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
+import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -17,8 +17,9 @@ public class AddPlayerEffectHappening extends Happening {
         super(name);
     }
 
+    // TODO: ランダムポーションの時の挙動をなんとかする
     private PotionEffectType currentPotionEffectType;
-    public void beginHappening() {
+    public void beginHappening(List<Player> players) {
         PotionEffect potionEffect = null;
         switch (super.getName()) {
             case HappeningConst.ADD_PLAYER_INVISIBLE:
@@ -55,7 +56,7 @@ public class AddPlayerEffectHappening extends Happening {
         }
         PotionEffect finalPotionEffect = potionEffect;
         currentPotionEffectType = potionEffect.getType();
-        Bukkit.getOnlinePlayers().forEach(p -> {
+        players.forEach(p -> {
             p.addPotionEffect(finalPotionEffect);
         });
     }

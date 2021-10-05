@@ -3,15 +3,23 @@ package net.kunmc.lab.somethinghappen.happening.logic;
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
+/**
+ * - 対応する事件
+ *   - 'upgradeTool'
+ *   - 'downgradeTool'
+ */
 public class ChangeToolHappening extends Happening{
     public ChangeToolHappening(String name) {
         super(name);
     }
 
-    public void beginHappening() {
-        Bukkit.getOnlinePlayers().forEach(p -> {
+    public void beginHappening(List<Player> players) {
+        players.forEach(p -> {
             for (int i = 0; i < p.getInventory().getContents().length;i++) {
                 ItemStack tool = null;
                 if (super.getName().equals(HappeningConst.UPGRADE_TOOL)) {

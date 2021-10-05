@@ -41,6 +41,13 @@ public class HappeningFactory {
             case HappeningConst.TRANS_HOTBAR_ITEM:
                 happening = new ChangeHotbarHappening(name);
                 break;
+            case HappeningConst.TELEPORT_PLAYER:
+            case HappeningConst.CHANGE_PLAYER_DIMENSION:
+                happening = new TeleportPlayerHappening(name);
+                break;
+            case HappeningConst.DIE_ON_FOOT_BLOCK:
+                happening = new DieOnFootBlockHappening(name);
+                break;
             default:
                 // TODO 何もしない出来事を返すようにしておくか検討
                 happening = new SpawnMobHappening(name);

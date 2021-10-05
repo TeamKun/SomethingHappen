@@ -12,6 +12,7 @@ public class Config {
     public static Map<String, Boolean> happenings = new HashMap<>();
     public static int spawnMobNum;
     public static int fallBlockNum;
+    public static int teleportRange;
     public static List<String> womanPlayer = new ArrayList<>();
     public static List<String> nonbinaryPlayer = new ArrayList<>();
 
@@ -34,5 +35,6 @@ public class Config {
         }
         spawnMobNum = config.getInt("spawnMobNum");
         fallBlockNum = config.getInt("fallBlockNum");
+        teleportRange = config.getInt("teleportRange");
     }
 }

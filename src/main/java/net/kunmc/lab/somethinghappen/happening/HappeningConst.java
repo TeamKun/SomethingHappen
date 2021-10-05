@@ -25,4 +25,7 @@ public class HappeningConst {
     public final static String DOWNGRADE_TOOL = "downgradeTool";
     public final static String CLEAR_HOTBAR_ITEM = "clearHotBarItem";
     public final static String TRANS_HOTBAR_ITEM = "transHotBarItem";
+    public final static String TELEPORT_PLAYER = "teleportPlayer";
+    public final static String CHANGE_PLAYER_DIMENSION = "changePlayerDimension";
+    public final static String DIE_ON_FOOT_BLOCK = "dieOnFootBlock";
 }

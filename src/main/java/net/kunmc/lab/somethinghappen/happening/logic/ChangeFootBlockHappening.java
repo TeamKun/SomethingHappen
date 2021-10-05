@@ -1,9 +1,9 @@
 package net.kunmc.lab.somethinghappen.happening.logic;
 
-import net.kunmc.lab.somethinghappen.Config;
 import net.kunmc.lab.somethinghappen.Somethinghappen;
 import net.kunmc.lab.somethinghappen.game.GameManager;
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
+import net.kunmc.lab.somethinghappen.happening.HappeningManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,6 +15,12 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * - 対応する事件
+ *   - 'changeFootBlockRandom'
+ *   - 'changeFootBlockMagma'
+ *   - 'changeFootBlockTNT'
+ */
 public class ChangeFootBlockHappening extends Happening{
 
     private BukkitTask task;
@@ -26,12 +32,11 @@ public class ChangeFootBlockHappening extends Happening{
         setRandomBlockData();
     }
 
-    public void beginHappening() {
+    public void continueHappening() {
         task = new BukkitRunnable() {
             @Override
             public void run() {
-                // TODO: addしたユーザに変える
-                Bukkit.getOnlinePlayers().forEach(p -> {
+                HappeningManager.getHappeningTargetPlayers().forEach(p -> {
                     Block block = p.getLocation().getBlock().getRelative(BlockFace.DOWN);
                     if (!shouldChangeBlock(block)) return;
                     BlockData blockData = null;
