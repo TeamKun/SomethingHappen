@@ -27,8 +27,8 @@ public class ChangeFootBlockHappening extends Happening{
 
     private List<Material> blockList = new ArrayList<>();
 
-    public ChangeFootBlockHappening(String name) {
-        super(name);
+    public ChangeFootBlockHappening(String name, String title) {
+        super(name, title);
         setRandomBlockData();
     }
 

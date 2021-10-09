@@ -1,9 +1,36 @@
-time: 10
+happeningSwitchTime: 20
+nextHappeningShowTime: 10
 spawnMobNum: 10
 fallBlockNum: 2
 teleportRange: 300
+convertBlockRange: 4
 womanPlayer:
+  - 23zi_51hun
+  - _hinana_
+  - akenn1549
+  - BALjirooo
+  - Bro_Catherine
+  - dbk_huuka
+  - gin499
+  - ikeko_99
+  - kakikama
+  - kono_a
+  - n0r41nu
+  - norunoru315
+  - odisan_0723
+  - Osaaaaa
+  - rosec_pin
+  - SAKIchan07
+  - suzuki2929
+  - urn1o
+  - Yaci56
+  - Yanyaa
+  - YOSHIKO__CHAN__
+  - onexttt0301
 nonbinaryPlayer:
+  - syakaijin_4869
+  - Fnyantory
+  - penny515
 happening:
   - 'spawnPassiveMob'
   - 'spawnZombie'
@@ -31,13 +58,18 @@ happening:
   - 'teleportPlayer'
   - 'changePlayerDimension'
   - 'dieOnFootBlock'
-  - 'beHpOne'
-  - 'dieEveryOne'
-  - 'dieRandomOne'
-  - 'prohibitVegetable'
-  - 'prohibitMeat'
+  - 'beOneHp'
+  - 'syncDeathEveryone'
+  - 'syncDeathRandom'
+  - 'beVeagan'
+  - 'beCarnivore'
   - 'prohibitWater'
   - 'prohibitJump'
-  - 'changeBlockStone'
+  - 'convertBlockToStone'
   - 'prohibitMan'
   - 'prohibitWoman'
+# TODO: 候補
+# プレイヤーの歩いた後ろが燃える
+# プレイヤーの歩いた後ろから水が出る
+# 特定アイテム所持で炎上
+# 体がスポンジになる

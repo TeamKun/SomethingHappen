@@ -26,8 +26,8 @@ public class FallEntityHappening extends Happening {
 
     private BukkitTask task;
 
-    public FallEntityHappening(String name) {
-        super(name);
+    public FallEntityHappening(String name, String title) {
+        super(name, title);
     }
 
     public void continueHappening() {

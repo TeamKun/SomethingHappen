@@ -15,8 +15,8 @@ import java.util.List;
  *   - 'transHotBarItem'
  */
 public class ChangeHotbarHappening extends Happening {
-    public ChangeHotbarHappening(String name) {
-        super(name);
+    public ChangeHotbarHappening(String name, String title) {
+        super(name, title);
     }
 
     public void beginHappening(List<Player> players) {

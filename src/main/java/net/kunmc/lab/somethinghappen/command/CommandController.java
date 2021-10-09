@@ -1,238 +1,402 @@
-//package net.kunmc.lab.somethinghappen.command;
-//
-//import net.kunmc.lab.somethinghappen.util.DecolationConst;
-//import org.bukkit.Bukkit;
-//import org.bukkit.command.Command;
-//import org.bukkit.command.CommandExecutor;
-//import org.bukkit.command.CommandSender;
-//import org.bukkit.command.TabCompleter;
-//import org.bukkit.entity.HumanEntity;
-//
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.List;
-//import java.util.stream.Collectors;
-//import java.util.stream.Stream;
-//
-//public class CommandController implements CommandExecutor, TabCompleter {
-//
-//    @Override
-//    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-//        List<String> completions = new ArrayList<>();
-//
-//        if (args.length == 1) {
-//            completions.addAll(Stream.of(
-//                    CommandConst.COMMAND_START,
-//                    CommandConst.COMMAND_STOP,
-//                    CommandConst.COMMAND_ADD,
-//                    CommandConst.COMMAND_REMOVE,
-//                    CommandConst.COMMAND_CONFIG_TIME_SPAN,
-//                    CommandConst.COMMAND_CONFIG_MAX_REVERT_NUM,
-//                    CommandConst.COMMAND_SHOW_STATUS)
-//                    .filter(e -> e.startsWith(args[0])).collect(Collectors.toList()));
-//        } else if (args.length == 2 && (args[0].equals(CommandConst.COMMAND_CONFIG_TIME_SPAN) || args[0].equals(CommandConst.COMMAND_CONFIG_MAX_REVERT_NUM))) {
-//            completions.add("<数字>");
-//        } else if (args.length == 2 && args[0].equals(CommandConst.COMMAND_ADD)) {
-//            List<String> tmpCompletions = new ArrayList<>();
-//            tmpCompletions.addAll(Arrays.asList("@a", "@p", "@r", "@s"));
-//            tmpCompletions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
-//            completions.addAll(tmpCompletions.stream().filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
-//        } else if (args.length == 2 && args[0].equals(CommandConst.COMMAND_REMOVE)) {
-//            List<String> tmpCompletions = new ArrayList<>();
-//            tmpCompletions.addAll(Arrays.asList("@a", "@p", "@r", "@s"));
-//            tmpCompletions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
-//            completions.addAll(tmpCompletions.stream()
-//                    //.filter(e -> (Bukkit.getPlayer(e) != null && GameManager.targetPlayer.contains(Bukkit.getPlayer(e).getUniqueId())) || e.startsWith("@"))
-//                    .filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
-//        }
-//        return completions;
-//    }
-//
-//    @Override
-//    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-//        if (args.length == 0) {
-//            sendUsage(sender);
-//            return true;
-//        }
-//        if (!(sender instanceof Player)) {
-//            sender.sendMessage("このコマンドはゲーム内からのみ実行できます");
-//            return true;
-//        }
-//
-//        String commandName = args[0];
-//        switch (commandName) {
-//            case CommandConst.COMMAND_START:
-//                if (GameManager.runningMode == GameManager.GameMode.MODE_START) {
-//                    sender.sendMessage(DecolationConst.RED + "すでに開始しています");
-//                    return true;
-//                } else if (GameManager.runningMode == GameManager.GameMode.MODE_STOPPING) {
-//                    sender.sendMessage(DecolationConst.AQUA + "可視化中はコマンドを受け付けていません");
-//                    return true;
-//                }
-//                if (args.length != 1) {
-//                    sender.sendMessage(DecolationConst.RED + "引数が不要なコマンドです");
-//                    return true;
-//                }
-//                GameManager.controller(GameManager.GameMode.MODE_START);
-//                sender.sendMessage(DecolationConst.GREEN + "ブロック透明化を開始します");
-//                break;
-//            case CommandConst.COMMAND_STOP:
-//                if (GameManager.runningMode == GameManager.GameMode.MODE_NEUTRAL) {
-//                    sender.sendMessage(DecolationConst.RED + "開始されていません");
-//                    return true;
-//                } else if (GameManager.runningMode == GameManager.GameMode.MODE_STOPPING) {
-//                    sender.sendMessage(DecolationConst.AQUA + "可視化中はコマンドを受け付けていません");
-//                    return true;
-//                }
-//                if (args.length != 1) {
-//                    sender.sendMessage(DecolationConst.RED + "引数が不要なコマンドです");
-//                    return true;
-//                }
-//                GameManager.controller(GameManager.GameMode.MODE_STOPPING);
-//                sender.sendMessage(DecolationConst.GREEN + "ブロック透過化終了、可視化します");
-//                break;
-//            case CommandConst.COMMAND_ADD:
-//                if (args.length != 2) {
-//                    sender.sendMessage(DecolationConst.RED + "引数の数が不正です");
-//                    return true;
-//                }
-//                List<Entity> players;
-//                try {
-//                    players = Bukkit.selectEntities(sender, args[1]);
-//                } catch (Exception e) {
-//                    sender.sendMessage(DecolationConst.RED + "存在しないプレイヤー名です");
-//                    return true;
-//                }
-//                if (players.isEmpty() || args[1].equals("@e")) {
-//                    sender.sendMessage(DecolationConst.RED + "存在しないまたはサーバに接続していないプレイヤー名です");
-//                    return true;
-//                }
-//                for (Entity p : players) {
-//                    if (GameManager.targetPlayer.contains(p.getUniqueId())) {
-//                        sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加済みです");
-//                    } else {
-//                        GameManager.targetPlayer.add(p.getUniqueId());
-//                        sender.sendMessage(DecolationConst.GREEN + p.getName() + "を追加しました");
-//                    }
-//                }
-//                break;
-//            case CommandConst.COMMAND_REMOVE:
-//                if (args.length != 2) {
-//                    sender.sendMessage(DecolationConst.RED + "引数の数が不正です");
-//                    return true;
-//                }
-//                try {
-//                    players = Bukkit.selectEntities(sender, args[1]);
-//                } catch (Exception e) {
-//                    sender.sendMessage(DecolationConst.RED + "存在しないプレイヤー名です");
-//                    return true;
-//                }
-//                if (players.isEmpty() || args[1].equals("@e")) {
-//                    sender.sendMessage(DecolationConst.RED + "存在しないまたはサーバに接続していないプレイヤー名です");
-//                    return true;
-//                }
-//                for (Entity p : players) {
-//                    if (!GameManager.targetPlayer.contains(p.getUniqueId())) {
-//                        sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加されていません");
-//                    } else {
-//                        GameManager.targetPlayer.remove(p.getUniqueId());
-//                        sender.sendMessage(DecolationConst.GREEN + p.getName() + "を削除しました");
-//                    }
-//                }
-//                break;
-//            case CommandConst.COMMAND_CONFIG_TIME_SPAN:
-//                if (args.length != 2) {
-//                    sender.sendMessage(DecolationConst.RED + "引数の数が不正です");
-//                    return true;
-//                }
-//                int ret = validateNum(sender, args[1]);
-//                if (ret != -1) {
-//                    Config.time = ret;
-//                    sender.sendMessage(DecolationConst.GREEN + "timeの値を" + Config.time + "に変更しました");
-//                }
-//                break;
-//            case CommandConst.COMMAND_CONFIG_MAX_REVERT_NUM:
-//                if (args.length != 2) {
-//                    sender.sendMessage(DecolationConst.RED + "引数の数が不正です");
-//                    return true;
-//                }
-//                ret = validateNum(sender, args[1]);
-//                if (ret != -1) {
-//                    Config.maxRevertNum = ret;
-//                    sender.sendMessage(DecolationConst.GREEN + "maxRevertNumの値を" + Config.maxRevertNum + "に変更しました");
-//                }
-//                break;
-//            case CommandConst.COMMAND_SHOW_STATUS:
-//                if (args.length != 1) {
-//                    sender.sendMessage(DecolationConst.RED + "引数が不要なコマンドです");
-//                    return true;
-//                }
-//                sender.sendMessage(DecolationConst.GREEN + "設定値一覧");
-//                List<String> playerList = new ArrayList();
-//                for (UUID id : GameManager.targetPlayer) {
-//                    if (Bukkit.getPlayer(id) != null) {
-//                        playerList.add(Bukkit.getPlayer(id).getName());
-//                    }
-//                }
-//                sender.sendMessage("  addedPlayer" + playerList);
-//                sender.sendMessage("  time: " + Config.time);
-//                sender.sendMessage("  maxRevertNum: " + Config.maxRevertNum);
-//                String gameStatus = "スタート前";
-//                if (GameManager.runningMode == GameManager.GameMode.MODE_START) {
-//                    gameStatus = "透明化稼働中";
-//                } else if (GameManager.runningMode == GameManager.GameMode.MODE_STOPPING) {
-//                    gameStatus = "可視化中";
-//                }
-//                sender.sendMessage("  gameStatus: " + gameStatus);
-//                break;
-//            default:
-//                sender.sendMessage(DecolationConst.RED + "存在しないコマンドです");
-//                sendUsage(sender);
-//        }
-//        return true;
-//    }
-//
-//    private void sendUsage(CommandSender sender) {
-//        String usagePrefix = String.format("  /%s ", CommandConst.MAIN_COMMAND);
-//        String descPrefix = "  ";
-//        sender.sendMessage(DecolationConst.GREEN + "Usage:");
-//        sender.sendMessage(String.format("%s%s"
-//                , usagePrefix, CommandConst.COMMAND_START));
-//        sender.sendMessage(String.format("%s透明化開始", descPrefix));
-//        sender.sendMessage(String.format("%s%s"
-//                , usagePrefix, CommandConst.COMMAND_STOP));
-//        sender.sendMessage(String.format("%s透明化を終了して可視化を開始", descPrefix));
-//        sender.sendMessage(String.format("%s%s <Player名|@a等>"
-//                , usagePrefix, CommandConst.COMMAND_ADD));
-//        sender.sendMessage(String.format("%s置いたブロックを透明化させるユーザを追加", descPrefix));
-//        sender.sendMessage(String.format("%s%s <Player名|@a等>"
-//                , usagePrefix, CommandConst.COMMAND_REMOVE));
-//        sender.sendMessage(String.format("%saddコマンドで追加したユーザを削除", descPrefix));
-//        sender.sendMessage(String.format("%s%s <number>"
-//                , usagePrefix, CommandConst.COMMAND_CONFIG_TIME_SPAN));
-//        sender.sendMessage(String.format("%sブロックを透明化させるまでの秒数（numberは1以上の整数）", descPrefix));
-//        sender.sendMessage(String.format("%s%s <number>"
-//                , usagePrefix, CommandConst.COMMAND_CONFIG_MAX_REVERT_NUM));
-//        sender.sendMessage(String.format("%s1Tickあたりに透明化を解除するブロックの個数（numberは1以上の整数）", descPrefix));
-//        sender.sendMessage(String.format("%s%s"
-//                , usagePrefix, CommandConst.COMMAND_SHOW_STATUS));
-//        sender.sendMessage(String.format("%s設定などゲームの状態を確認", descPrefix));
-//
-//    }
-//
-//    private int validateNum(CommandSender sender, String target) {
-//        // 不正な場合は-1を返す
-//        int num;
-//        try {
-//            num = Integer.parseInt(target);
-//        } catch (NumberFormatException e) {
-//            sender.sendMessage(DecolationConst.RED + "整数以外が入力されています");
-//            return -1;
-//        }
-//        if (num < 1) {
-//            sender.sendMessage(DecolationConst.RED + "0より大きい整数を入力してください");
-//            return -1;
-//        }
-//        return num;
-//    }
-//}
+package net.kunmc.lab.somethinghappen.command;
+
+import net.kunmc.lab.somethinghappen.Config;
+import net.kunmc.lab.somethinghappen.game.GameManager;
+import net.kunmc.lab.somethinghappen.happening.HappeningManager;
+import net.kunmc.lab.somethinghappen.util.DecolationConst;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class CommandController implements CommandExecutor, TabCompleter {
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> completions = new ArrayList<>();
+
+        if (args.length == 1) {
+            completions.addAll(Stream.of(
+                    CommandConst.START,
+                    CommandConst.STOP,
+                    CommandConst.ADD,
+                    CommandConst.REMOVE,
+                    CommandConst.RELOAD_CONFIG,
+                    CommandConst.SET_CONFIG,
+                    CommandConst.SHOW_STATUS)
+                    .filter(e -> e.startsWith(args[0])).collect(Collectors.toList()));
+        } else if (args.length == 3 && args[2].equals(CommandConst.SET_CONFIG) ||
+                (args[3].equals(CommandConst.CONFIG_HAPPENING_SWITCH_TIME) ||
+                        args[3].equals(CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME) ||
+                        args[3].equals(CommandConst.CONFIG_FALL_BLOCK_NUM) ||
+                        args[3].equals(CommandConst.CONFIG_CONVERT_BLOCK_RANGE) ||
+                        args[3].equals(CommandConst.CONFIG_SPAWN_MOB_NUM))) {
+            completions.add("<数字>");
+        } else if (args.length == 2 && args[0].equals(CommandConst.ADD)) {
+            List<String> tmpCompletions = new ArrayList<>();
+            tmpCompletions.addAll(Arrays.asList("@a", "@p", "@r", "@s"));
+            tmpCompletions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
+            completions.addAll(tmpCompletions.stream().filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
+        } else if (args.length == 2 && args[0].equals(CommandConst.REMOVE)) {
+            List<String> tmpCompletions = new ArrayList<>();
+            tmpCompletions.addAll(Arrays.asList("@a", "@p", "@r", "@s"));
+            tmpCompletions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
+            completions.addAll(tmpCompletions.stream()
+                    .filter(e -> (Bukkit.getPlayer(e) != null && GameManager.getPlayers().contains(Bukkit.getPlayer(e).getUniqueId())) || e.startsWith("@"))
+                    .filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
+        } else if (args.length == 3 && args[2].equals(CommandConst.CONFIG_ON_HAPPENING)) {
+            for(Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
+                if (happening.getValue()) {
+                    completions.add(happening.getKey());
+                }
+            }
+        } else if (args.length == 3 && args[2].equals(CommandConst.CONFIG_OFF_HAPPENING)) {
+            for(Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
+                if (!happening.getValue()) {
+                    completions.add(happening.getKey());
+                }
+            }
+        } else if (args.length == 3 && args[2].equals(CommandConst.CONFIG_ADD_WOMAN_PLAYER)){
+            completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+                    .filter(e -> Config.nonbinaryPlayer.contains(e))
+                    .filter(e -> e.startsWith(args[3])).collect(Collectors.toList()));
+        } else if (args.length == 3 && args[2].equals(CommandConst.CONFIG_ADD_NONBINARY_PLAYER)){
+            completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+                    .filter(e -> Config.womanPlayer.contains(e))
+                    .filter(e -> e.startsWith(args[3])).collect(Collectors.toList()));
+        }
+        return completions;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 0) {
+            sendUsage(sender);
+            return true;
+        }
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("このコマンドはゲーム内からのみ実行できます");
+            return true;
+        }
+
+        String commandName = args[0];
+        switch (commandName) {
+            case CommandConst.START:
+                if (GameManager.runningMode == GameManager.GameMode.RUNNING) {
+                    sender.sendMessage(DecolationConst.RED + "すでに開始しています");
+                    return true;
+                }
+                if (!checkArgsNum(sender,args.length, 1)) return true;
+                GameManager.controller(GameManager.GameMode.RUNNING);
+                sender.sendMessage(DecolationConst.GREEN + "開始します");
+                break;
+            case CommandConst.STOP:
+                if (GameManager.runningMode == GameManager.GameMode.NEUTRAL) {
+                    sender.sendMessage(DecolationConst.RED + "開始されていません");
+                    return true;
+                }
+                if (args.length != 1) {
+                    sender.sendMessage(DecolationConst.RED + "引数が不要なコマンドです");
+                    return true;
+                }
+                GameManager.controller(GameManager.GameMode.NEUTRAL);
+                sender.sendMessage(DecolationConst.GREEN + "ブロック透過化終了、可視化します");
+                break;
+            case CommandConst.ADD:
+                if (!checkArgsNum(sender,args.length, 2)) return true;
+                List<Entity> players;
+                try {
+                    players = Bukkit.selectEntities(sender, args[1]);
+                } catch (Exception e) {
+                    sender.sendMessage(DecolationConst.RED + "存在しないプレイヤー名です");
+                    return true;
+                }
+                if (players.isEmpty() || args[1].equals("@e")) {
+                    sender.sendMessage(DecolationConst.RED + "存在しないまたはサーバに接続していないプレイヤー名です");
+                    return true;
+                }
+                for (Entity p : players) {
+                    if (GameManager.getPlayers().contains(p.getUniqueId())) {
+                        sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加済みです");
+                    } else {
+                        GameManager.getPlayers().add(p.getUniqueId());
+                        sender.sendMessage(DecolationConst.GREEN + p.getName() + "を追加しました");
+                    }
+                }
+                break;
+            case CommandConst.REMOVE:
+                if (!checkArgsNum(sender,args.length, 2)) return true;
+                try {
+                    players = Bukkit.selectEntities(sender, args[1]);
+                } catch (Exception e) {
+                    sender.sendMessage(DecolationConst.RED + "存在しないプレイヤー名です");
+                    return true;
+                }
+                if (players.isEmpty() || args[1].equals("@e")) {
+                    sender.sendMessage(DecolationConst.RED + "存在しないまたはサーバに接続していないプレイヤー名です");
+                    return true;
+                }
+                for (Entity p : players) {
+                    if (!GameManager.getPlayers().contains(p.getUniqueId())) {
+                        sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加されていません");
+                    } else {
+                        GameManager.getPlayers().remove(p.getUniqueId());
+                        sender.sendMessage(DecolationConst.GREEN + p.getName() + "を削除しました");
+                    }
+                }
+                break;
+            case CommandConst.RELOAD_CONFIG:
+                if (args.length != 1) {
+                    sender.sendMessage(DecolationConst.RED + "引数が不要なコマンドです");
+                    return true;
+                }
+                Config.loadConfig(true);
+            case CommandConst.SET_CONFIG:
+                switch (args[1]) {
+                    case CommandConst.CONFIG_HAPPENING_SWITCH_TIME:
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
+                        int ret = validateNum(sender, args[2]);
+                        if (ret == -1) return true;
+
+                        Config.happeningSwitchTime = ret;
+                        sender.sendMessage(DecolationConst.GREEN + CommandConst.CONFIG_HAPPENING_SWITCH_TIME + "の値を" + Config.happeningSwitchTime + "に変更しました");
+                        if (Config.nextHappeningShowTime > Config.happeningSwitchTime) {
+                            Config.nextHappeningShowTime = Config.happeningSwitchTime;
+                            sender.sendMessage(DecolationConst.AQUA + CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME + "の値を" + Config.nextHappeningShowTime + "に変更しました");
+                        }
+                        break;
+                    case CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME:
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
+                        ret = validateNum(sender, args[2]);
+                        if (ret == -1) return true;
+
+                        Config.happeningSwitchTime = ret;
+                        sender.sendMessage(DecolationConst.GREEN + CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME + "の値を" + Config.nextHappeningShowTime + "に変更しました");
+                        if (Config.nextHappeningShowTime > Config.happeningSwitchTime) {
+                            Config.happeningSwitchTime = Config.nextHappeningShowTime;
+                            sender.sendMessage(DecolationConst.AQUA + CommandConst.CONFIG_HAPPENING_SWITCH_TIME + "の値を" + Config.happeningSwitchTime + "に変更しました");
+                        }
+                        break;
+                    case CommandConst.CONFIG_CONVERT_BLOCK_RANGE:
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
+                        ret = validateNum(sender, args[2]);
+                        if (ret == -1) return true;
+
+                        Config.convertBlockRange = ret;
+                        sender.sendMessage(DecolationConst.GREEN + CommandConst.CONFIG_CONVERT_BLOCK_RANGE + "の値を" + Config.convertBlockRange + "に変更しました");
+                        break;
+                    case CommandConst.CONFIG_FALL_BLOCK_NUM:
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
+                        ret = validateNum(sender, args[2]);
+                        if (ret == -1) return true;
+
+                        Config.convertBlockRange = ret;
+                        sender.sendMessage(DecolationConst.GREEN + CommandConst.CONFIG_FALL_BLOCK_NUM + "の値を" + Config.fallBlockNum + "に変更しました");
+                        break;
+                    case CommandConst.CONFIG_TELEPORT_RANGE:
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
+                        ret = validateNum(sender, args[2]);
+                        if (ret == -1) return true;
+
+                        Config.teleportRange = ret;
+                        sender.sendMessage(DecolationConst.GREEN + CommandConst.CONFIG_TELEPORT_RANGE + "の値を" + Config.teleportRange + "に変更しました");
+                        break;
+                    case CommandConst.CONFIG_SPAWN_MOB_NUM:
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
+                        ret = validateNum(sender, args[2]);
+                        if (ret == -1) return true;
+
+                        Config.spawnMobNum = ret;
+                        sender.sendMessage(DecolationConst.GREEN + CommandConst.CONFIG_SPAWN_MOB_NUM + "の値を" + Config.spawnMobNum + "に変更しました");
+                        break;
+                    case CommandConst.CONFIG_ON_HAPPENING:
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
+                        if (!Config.happenings.containsKey(args[2]))
+                            sender.sendMessage(DecolationConst.RED + "存在しないHappeningです");
+                        if (Config.happenings.get(args[2])) sender.sendMessage(DecolationConst.AQUA + "すでにONになっています");
+                        Config.happenings.put(args[2], true);
+                        break;
+                    case CommandConst.CONFIG_OFF_HAPPENING:
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
+                        if (!Config.happenings.containsKey(args[2]))
+                            sender.sendMessage(DecolationConst.RED + "存在しないHappeningです");
+                        if (!Config.happenings.get(args[2])) sender.sendMessage(DecolationConst.AQUA + "すでにOFFになっています");
+                        Config.happenings.put(args[2], false);
+                        break;
+                    case CommandConst.CONFIG_ADD_WOMAN_PLAYER:
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
+                        try {
+                            players = Bukkit.selectEntities(sender, args[2]);
+                        } catch (Exception e) {
+                            sender.sendMessage(DecolationConst.RED + "存在しないプレイヤー名です");
+                            return true;
+                        }
+                        if (players.isEmpty() || args[2].equals("@e")) {
+                            sender.sendMessage(DecolationConst.RED + "存在しないまたはサーバに接続していないプレイヤー名です");
+                            return true;
+                        }
+                        for (Entity p : players) {
+                            if (Config.nonbinaryPlayer.contains(p.getName())) {
+                                sender.sendMessage(DecolationConst.AQUA + p.getName() + "はnonBinaryPlayerに存在しています");
+                            } else if (Config.womanPlayer.contains(p.getName())) {
+                                sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加済みです");
+                            } else {
+                                Config.womanPlayer.add(p.getName());
+                                sender.sendMessage(DecolationConst.GREEN + p.getName() + "を追加しました");
+                            }
+                        }
+                        break;
+                    case CommandConst.CONFIG_ADD_NONBINARY_PLAYER:
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
+                        try {
+                            players = Bukkit.selectEntities(sender, args[2]);
+                        } catch (Exception e) {
+                            sender.sendMessage(DecolationConst.RED + "存在しないプレイヤー名です");
+                            return true;
+                        }
+                        if (players.isEmpty() || args[2].equals("@e")) {
+                            sender.sendMessage(DecolationConst.RED + "存在しないまたはサーバに接続していないプレイヤー名です");
+                            return true;
+                        }
+                        for (Entity p : players) {
+                            if (Config.womanPlayer.contains(p.getName())) {
+                                sender.sendMessage(DecolationConst.AQUA + p.getName() + "はwomanPlayerに存在しています");
+                            } else if (Config.nonbinaryPlayer.contains(p.getName())) {
+                                sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加済みです");
+                            } else {
+                                Config.nonbinaryPlayer.add(p.getName());
+                                sender.sendMessage(DecolationConst.GREEN + p.getName() + "を追加しました");
+                            }
+                        }
+                        break;
+                }
+               break;
+            case CommandConst.SHOW_STATUS:
+                if (args.length != 1) {
+                    sender.sendMessage(DecolationConst.RED + "引数が不要なコマンドです");
+                    return true;
+                }
+                sender.sendMessage(DecolationConst.GREEN + "設定値一覧");
+                List<String> playerList = new ArrayList();
+                for (UUID id : GameManager.getPlayers()) {
+                    if (Bukkit.getPlayer(id) != null) {
+                        playerList.add(Bukkit.getPlayer(id).getName());
+                    }
+                }
+                List<String> happenings = new ArrayList<>();
+                for (Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
+                    if (happening.getValue()) happenings.add(happening.getKey());
+                }
+                String prefix = "  ";
+                sender.sendMessage(String.format("%saddedPlayer: ", prefix) + playerList);
+                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_HAPPENING_SWITCH_TIME, Config.happeningSwitchTime));
+                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME, Config.nextHappeningShowTime));
+                sender.sendMessage(String.format("%shappenings : ", prefix, Config.happeningSwitchTime) + happenings);
+                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_CONVERT_BLOCK_RANGE, Config.convertBlockRange));
+                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_FALL_BLOCK_NUM, Config.fallBlockNum));
+                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_TELEPORT_RANGE, Config.teleportRange));
+                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_SPAWN_MOB_NUM, Config.spawnMobNum));
+                sender.sendMessage(String.format("%swomanPlayer: ", prefix, Config.womanPlayer));
+                sender.sendMessage(String.format("%snonbinaryPlayer: ", prefix, Config.nonbinaryPlayer));
+                if (GameManager.canEventProcess()) {
+                    sender.sendMessage(String.format("%s現在のハプニング: ", prefix) + HappeningManager.currentHappening.getTitle());
+                }
+                break;
+            default:
+                sender.sendMessage(DecolationConst.RED + "存在しないコマンドです");
+                sendUsage(sender);
+        }
+        return true;
+    }
+
+    private void sendUsage(CommandSender sender) {
+        String usagePrefix = String.format("  /%s ", CommandConst.MAIN);
+        String descPrefix = "  ";
+        sender.sendMessage(DecolationConst.GREEN + "Usage:");
+        sender.sendMessage(String.format("%s%s"
+                , usagePrefix, CommandConst.START));
+        sender.sendMessage(String.format("%s開始", descPrefix));
+        sender.sendMessage(String.format("%s%s"
+                , usagePrefix, CommandConst.STOP));
+        sender.sendMessage(String.format("%s終了", descPrefix));
+        sender.sendMessage(String.format("%s%s <Player名|@a等>"
+                , usagePrefix, CommandConst.ADD));
+        sender.sendMessage(String.format("%s事件の対象になるユーザを追加", descPrefix));
+        sender.sendMessage(String.format("%s%s <Player名|@a等>"
+                , usagePrefix, CommandConst.REMOVE));
+        sender.sendMessage(String.format("%saddコマンドで追加したユーザを削除", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <number>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_HAPPENING_SWITCH_TIME));
+        sender.sendMessage(String.format("%sHappeningの切り替え間隔(秒)", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <number>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME));
+        sender.sendMessage(String.format("%sHappening発生前の事前表示をする時間(秒)", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <number>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_CONVERT_BLOCK_RANGE));
+        sender.sendMessage(String.format("%s周囲石化発生時の石化範囲", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <number>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_FALL_BLOCK_NUM));
+        sender.sendMessage(String.format("%s上から矢などが降ってくる時の同時に降ってくる数", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <number>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_TELEPORT_RANGE));
+        sender.sendMessage(String.format("%sテレポートの範囲", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <number>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_SPAWN_MOB_NUM));
+        sender.sendMessage(String.format("%s周囲にモブが発生する時の数", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <Player名>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_ADD_NONBINARY_PLAYER));
+        sender.sendMessage(String.format("%s性別指定のないプレイヤーのリスト追加", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <Player名>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_REMOVE_NONBINARY_PLAYER));
+        sender.sendMessage(String.format("%ss性別指定のないプレイヤーのリスト削除", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <Player名>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_ADD_WOMAN_PLAYER));
+        sender.sendMessage(String.format("%s女参加勢のリスト追加", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <Player名>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_REMOVE_WOMAN_PLAYER));
+        sender.sendMessage(String.format("%s女参加勢のリスト削除", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <Happening名>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_ON_HAPPENING));
+        sender.sendMessage(String.format("%s発生するHappeningの追加", descPrefix));
+        sender.sendMessage(String.format("%s%s %s <Happening名>"
+                , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_OFF_HAPPENING));
+        sender.sendMessage(String.format("%s発生するHappeningの削除", descPrefix));
+
+        sender.sendMessage(String.format("%s%s"
+                , usagePrefix, CommandConst.SHOW_STATUS));
+        sender.sendMessage(String.format("%s設定などゲームの状態を確認", descPrefix));
+
+    }
+
+    private int validateNum(CommandSender sender, String target) {
+        // 不正な場合は-1を返す
+        int num;
+        try {
+            num = Integer.parseInt(target);
+        } catch (NumberFormatException e) {
+            sender.sendMessage(DecolationConst.RED + "整数以外が入力されています");
+            return -1;
+        }
+        if (num < 1) {
+            sender.sendMessage(DecolationConst.RED + "0より大きい整数を入力してください");
+            return -1;
+        }
+        return num;
+    }
+
+    private boolean checkArgsNum(CommandSender sender, int argsLength, int validLength){
+        if (argsLength != validLength) {
+            sender.sendMessage(DecolationConst.RED + "引数の数が不正です");
+            return false;
+        }
+        return true;
+    }
+}

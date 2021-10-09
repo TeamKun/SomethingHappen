@@ -14,8 +14,8 @@ import java.util.List;
  *   - 'downgradeTool'
  */
 public class ChangeToolHappening extends Happening{
-    public ChangeToolHappening(String name) {
-        super(name);
+    public ChangeToolHappening(String name, String title) {
+        super(name, title);
     }
 
     public void beginHappening(List<Player> players) {

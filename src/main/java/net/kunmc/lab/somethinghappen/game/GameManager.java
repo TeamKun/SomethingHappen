@@ -1,5 +1,7 @@
 package net.kunmc.lab.somethinghappen.game;
 
+import net.kunmc.lab.somethinghappen.happening.HappeningManager;
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -30,5 +32,12 @@ public class GameManager {
 
     public static Set<UUID> getPlayers(){
         return player;
+    }
+
+    public static boolean canEventProcess(){
+        if (GameManager.runningMode == GameManager.GameMode.NEUTRAL ||
+                HappeningManager.currentHappening == null)
+            return false;
+        return true;
     }
 }

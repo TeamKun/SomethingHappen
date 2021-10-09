@@ -5,6 +5,8 @@ import net.kunmc.lab.somethinghappen.happening.HappeningManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import static net.kunmc.lab.somethinghappen.happening.HappeningManager.setNextHappening;
+
 public class Task extends BukkitRunnable {
     private JavaPlugin plugin;
 
@@ -14,14 +16,19 @@ public class Task extends BukkitRunnable {
 
     @Override
     public void run() {
-        //if (GameManager.runningMode == GameManager.GameMode.NEUTRAL)
-        //    return;
+        if (GameManager.runningMode == GameManager.GameMode.NEUTRAL)
+            return;
 
         if (HappeningManager.shouldSwitch()) {
             HappeningManager.switchHappening();
         }
 
-        // 一定時間間隔でハプニングを変更する処理
+        if (HappeningManager.updatedNextHappening()) setNextHappening();
+
+        if (HappeningManager.shouldShowNextHappening()) {
+            HappeningManager.showNextHappening();
+        }
+
         HappeningManager.incrementTimer();
     }
 }

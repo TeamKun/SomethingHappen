@@ -3,6 +3,7 @@ package net.kunmc.lab.somethinghappen.happening.logic;
 import net.kunmc.lab.somethinghappen.Config;
 import net.kunmc.lab.somethinghappen.game.GameManager;
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
+import net.kunmc.lab.somethinghappen.happening.HappeningManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -13,8 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AddPlayerEffectHappening extends Happening {
-    public AddPlayerEffectHappening(String name) {
-        super(name);
+    public AddPlayerEffectHappening(String name, String title) {
+        super(name, title);
     }
 
     // TODO: ランダムポーションの時の挙動をなんとかする
@@ -62,7 +63,7 @@ public class AddPlayerEffectHappening extends Happening {
     }
 
     public void endHappening() {
-        Bukkit.getOnlinePlayers().forEach(p -> {
+        HappeningManager.getHappeningTargetPlayers().forEach(p -> {
             p.removePotionEffect(currentPotionEffectType);
         });
     }

@@ -7,8 +7,10 @@ import java.util.List;
 
 public class Happening {
     private String name;
-    public Happening(String name){
+    private String title;
+    public Happening(String name, String title){
         this.name = name;
+        this.title = title;
     }
 
     // 事件発生直後のみ実行する処理
@@ -25,5 +27,9 @@ public class Happening {
 
     public String getName (){
         return name;
+    }
+
+    public String getTitle (){
+        return title;
     }
 }

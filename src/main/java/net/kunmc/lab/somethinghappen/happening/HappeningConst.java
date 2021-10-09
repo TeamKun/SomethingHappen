@@ -28,4 +28,15 @@ public class HappeningConst {
     public final static String TELEPORT_PLAYER = "teleportPlayer";
     public final static String CHANGE_PLAYER_DIMENSION = "changePlayerDimension";
     public final static String DIE_ON_FOOT_BLOCK = "dieOnFootBlock";
+    public final static String BE_ONE_HP = "beOneHp";
+    public final static String SYNC_DEATH_EVERYONE = "syncDeathEveryone";
+    public final static String SYNC_DEATH_RANDOM = "syncDeathRandom";
+    public final static String BE_VEAGAN = "beVeagan";
+    public final static String BE_CARNIVORE = "beCarnivore";
+    public final static String PROHIBIT_WATER = "prohibitWater";
+    public final static String PROHIBIT_JUMP = "prohibitJump";
+    public final static String CONVERT_BLOCK_TO_STONE = "convertBlockToStone";
+    public final static String PROHIBIT_MAN = "prohibitMan";
+    public final static String PROHIBIT_WOMAN = "prohibitWoman";
 }
+

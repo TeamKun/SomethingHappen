@@ -19,8 +19,8 @@ import java.util.List;
  *   - 'spawnBat'
  */
 public class SpawnMobHappening extends Happening{
-    public SpawnMobHappening (String name) {
-        super(name);
+    public SpawnMobHappening (String name, String title) {
+        super(name, title);
     }
 
     public void beginHappening(List<Player> players) {

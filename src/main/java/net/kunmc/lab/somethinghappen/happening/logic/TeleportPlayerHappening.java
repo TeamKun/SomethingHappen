@@ -21,8 +21,8 @@ public class TeleportPlayerHappening extends Happening{
     private final String nether = "world_nether";
     private final String end = "world_the_end";
 
-    public TeleportPlayerHappening(String name) {
-        super(name);
+    public TeleportPlayerHappening(String name, String title) {
+        super(name, title);
     }
 
     public void beginHappening(List<Player> players) {
