@@ -1,6 +1,7 @@
 package net.kunmc.lab.somethinghappen.happening.logic;
 
 import net.kunmc.lab.somethinghappen.Config;
+import net.kunmc.lab.somethinghappen.SomethingHappen;
 import net.kunmc.lab.somethinghappen.game.GameManager;
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
 import net.kunmc.lab.somethinghappen.happening.HappeningManager;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +40,8 @@ public class AddPlayerEffectHappening extends Happening {
                 }
                 break;
             case HappeningConst.ADD_PLAYER_LEVITATION:
-                potionEffect = new PotionEffect(PotionEffectType.LEVITATION, Config.happeningSwitchTime * 20, 3);
+                // 浮遊時間長いとグダるので15秒だけ
+                potionEffect = new PotionEffect(PotionEffectType.LEVITATION, 15 * 20, 3);
                 break;
             case HappeningConst.ADD_PLAYER_BLINDNESS:
                 potionEffect = new PotionEffect(PotionEffectType.BLINDNESS, Config.happeningSwitchTime * 20, 1);
@@ -87,10 +90,24 @@ public class AddPlayerEffectHappening extends Happening {
     public void beginHappeningOnLoginOrRespawn(Player player) {
         List<Player> p = new ArrayList<>();
         p.add(player);
-        beginHappening(p);
+        new PotionEffectLaterTask(p).runTaskLater(SomethingHappen.getPlugin(), 1);
     }
 
     public void endPlayerHappening(Player player) {
         player.removePotionEffect(currentPotionEffectType);
     }
 }
+
+class PotionEffectLaterTask extends BukkitRunnable {
+    List<Player> p;
+
+    PotionEffectLaterTask(List<Player> p) {
+        this.p = p;
+    }
+
+    @Override
+    public void run() {
+        HappeningManager.currentHappening.beginHappening(p);
+    }
+}
+

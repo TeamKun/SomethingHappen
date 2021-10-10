@@ -33,8 +33,8 @@ public class TeleportPlayerHappening extends Happening {
                 p.teleport(location);
             } else if (super.getName().equals(HappeningConst.CHANGE_PLAYER_DIMENSION)) {
                 Location location = p.getLocation();
-                if (location.getY() > 120) {
-                    location.setY(120);
+                if (location.getY() > 115) {
+                    location.setY(115);
                 }
                 location.setWorld(Bukkit.getWorld(getNextDimension(p.getWorld().getName())));
                 p.teleport(location);

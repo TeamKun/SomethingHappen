@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import net.kunmc.lab.somethinghappen.game.GameManager;
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
 import net.kunmc.lab.somethinghappen.happening.HappeningManager;
+import net.kunmc.lab.somethinghappen.happening.logic.SyncDeathHappening;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,14 +29,23 @@ public class PlayerEventHandler implements Listener {
     public void onDeath(PlayerDeathEvent event) {
         if (!GameManager.canEventProcess()) return;
 
+        // すでに誰かに殺されたプレイヤーは処理しない
+        System.out.println(SyncDeathHappening.players + " " + event.getEntity().getName());
+        if (SyncDeathHappening.players.contains(event.getEntity().getName())) {
+            SyncDeathHappening.players.remove(event.getEntity().getName());
+            return;
+        }
+
         if (HappeningManager.currentHappening.getName().equals(HappeningConst.SYNC_DEATH_RANDOM)) {
             Object[] players = HappeningManager.getHappeningTargetPlayers().stream()
                     .filter(e -> !e.isDead()).collect(Collectors.toList()).toArray();
             Object player = players[GameManager.rand.nextInt(players.length)];
+            SyncDeathHappening.players.add(((Player) player).getName());
             ((Player) player).damage(1000, event.getEntity());
         } else if (HappeningManager.currentHappening.getName().equals(HappeningConst.SYNC_DEATH_EVERYONE)) {
             HappeningManager.getHappeningTargetPlayers().stream()
                     .filter(e -> !e.isDead()).forEach(p -> {
+                SyncDeathHappening.players.add(p.getName());
                 p.damage(1000, event.getEntity());
             });
         }

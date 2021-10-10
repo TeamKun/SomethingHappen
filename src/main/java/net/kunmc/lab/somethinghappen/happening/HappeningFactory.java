@@ -54,6 +54,8 @@ public class HappeningFactory {
                 break;
             case HappeningConst.SYNC_DEATH_RANDOM:
             case HappeningConst.SYNC_DEATH_EVERYONE:
+                happening = new SyncDeathHappening(name, getHappeningMessage(name));
+                break;
             case HappeningConst.BE_VEAGAN:
             case HappeningConst.BE_CARNIVORE:
             case HappeningConst.PROHIBIT_JUMP:

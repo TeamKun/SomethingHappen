@@ -127,7 +127,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 GameManager.controller(GameManager.GameMode.NEUTRAL);
-                sender.sendMessage(DecolationConst.GREEN + "ブロック透過化終了、可視化します");
+                sender.sendMessage(DecolationConst.GREEN + "終了します");
                 break;
             case CommandConst.SET_NEXT_HAPPENING:
                 HappeningManager.setNextHappening(args[1]);
@@ -142,6 +142,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 Config.loadConfig(true);
+                sender.sendMessage(DecolationConst.GREEN + "設定をリロードしました");
                 break;
             case CommandConst.SET_CONFIG:
                 switch (args[1]) {
@@ -162,7 +163,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                         ret = validateNum(sender, args[2]);
                         if (ret == -1) return true;
 
-                        Config.happeningSwitchTime = ret;
+                        Config.nextHappeningShowTime = ret;
                         sender.sendMessage(DecolationConst.GREEN + CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME + "の値を" + Config.nextHappeningShowTime + "に変更しました");
                         if (Config.nextHappeningShowTime > Config.happeningSwitchTime) {
                             Config.happeningSwitchTime = Config.nextHappeningShowTime;
@@ -275,10 +276,10 @@ public class CommandController implements CommandExecutor, TabCompleter {
                             return true;
                         }
                         for (Entity p : players) {
-                            if (!Config.womanPlayer.contains(p.getUniqueId())) {
+                            if (!Config.womanPlayer.contains(p.getName())) {
                                 sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加されていません");
                             } else {
-                                Config.womanPlayer.remove(p.getUniqueId());
+                                Config.womanPlayer.remove(p.getName());
                                 sender.sendMessage(DecolationConst.GREEN + p.getName() + "を削除しました");
                             }
                         }
@@ -296,10 +297,10 @@ public class CommandController implements CommandExecutor, TabCompleter {
                             return true;
                         }
                         for (Entity p : players) {
-                            if (!Config.nonbinaryPlayer.contains(p.getUniqueId())) {
+                            if (!Config.nonbinaryPlayer.contains(p.getName())) {
                                 sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加されていません");
                             } else {
-                                Config.nonbinaryPlayer.remove(p.getUniqueId());
+                                Config.nonbinaryPlayer.remove(p.getName());
                                 sender.sendMessage(DecolationConst.GREEN + p.getName() + "を削除しました");
                             }
                         }
@@ -400,8 +401,8 @@ public class CommandController implements CommandExecutor, TabCompleter {
             sender.sendMessage(DecolationConst.RED + "整数以外が入力されています");
             return -1;
         }
-        if (num < 1) {
-            sender.sendMessage(DecolationConst.RED + "0より大きい整数を入力してください");
+        if (num < 0) {
+            sender.sendMessage(DecolationConst.RED + "0以上の整数を入力してください");
             return -1;
         }
         return num;

@@ -64,7 +64,7 @@ public class HappeningManager {
         nextHappening = HappeningFactory.createHappening((String) happeningName);
         setNextHappening = true;
         filterHappeningQueue.add(nextHappening.getName());
-        if (filterHappeningQueue.size() > 2) {
+        if (filterHappeningQueue.size() > 8) {
             filterHappeningQueue.poll();
         }
     }

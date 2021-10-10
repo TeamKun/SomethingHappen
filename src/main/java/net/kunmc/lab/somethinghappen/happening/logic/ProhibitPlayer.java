@@ -57,12 +57,11 @@ public class ProhibitPlayer extends Happening {
                         double opx = burnTargetPlayer.getLocation().getX();
                         double opy = burnTargetPlayer.getLocation().getY();
                         double opz = burnTargetPlayer.getLocation().getZ();
-                        double diffX = px - opx;
-                        double diffZ = pz - opz;
-                        double absX = Math.abs(diffX);
-                        double absZ = Math.abs(diffZ);
+                        double absX = Math.abs(px - opx);
+                        double absY = Math.abs(py - opy);
+                        double absZ = Math.abs(pz - opz);
 
-                        if (Math.abs(py - opy) < 1.0 && absX < 1.0 && absZ < 1.0) {
+                        if (absY < 2.0 && absX < 2.0 && absZ < 2.0) {
                             burnTargetPlayer.setFireTicks(100);
                         }
                     }
