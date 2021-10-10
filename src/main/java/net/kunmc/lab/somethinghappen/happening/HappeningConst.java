@@ -40,5 +40,6 @@ public class HappeningConst {
     public final static String BE_SPONGE_BODY = "beSpongeBody";
     public final static String PROHIBIT_MAN = "prohibitMan";
     public final static String PROHIBIT_WOMAN = "prohibitWoman";
+    public final static String CHANGE_ADVENTURE_MODE = "changeAdventureMode";
 }
 

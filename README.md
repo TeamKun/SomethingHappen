@@ -93,3 +93,4 @@
 |beSpongeBody|体がスポンジ化する（プレイヤーの周囲の水、マグマを空気に変換する）|convertBlockRangeの範囲だけ変換される|
 |prohibitMan|女が男に近づくと燃える|https://github.com/TeamKun/SomethingHappen/blob/master/src/main/resources/config.yml のwomanPlayerおよびnonbinaryPlayerを除くプレイヤーを男として定義<br />womanPlayerを女として定義|
 |prohibitWoman|男が女に近づくと燃える|https://github.com/TeamKun/SomethingHappen/blob/master/src/main/resources/config.yml のwomanPlayerおよびnonbinaryPlayerを除くプレイヤーを男として定義<br />womanPlayerを女として定義|
+|changeAdventureMode|アドベンチャーモードになる||

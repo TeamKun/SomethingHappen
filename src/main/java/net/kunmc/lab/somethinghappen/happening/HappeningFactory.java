@@ -72,6 +72,9 @@ public class HappeningFactory {
             case HappeningConst.PROHIBIT_WOMAN:
                 happening = new ProhibitPlayer(name, getHappeningMessage(name));
                 break;
+            case HappeningConst.CHANGE_ADVENTURE_MODE:
+                happening = new ChangeGameModeHappening(name, getHappeningMessage(name));
+                break;
             default:
                 // 想定しない入力の場合は適当に返す
                 happening = new SpawnMobHappening(HappeningConst.SPAWN_PASSIVE_MOB, getHappeningMessage(HappeningConst.SPAWN_PASSIVE_MOB));
@@ -128,7 +131,7 @@ public class HappeningFactory {
                 message = "盲目";
                 break;
             case HappeningConst.ADD_PLAYER_RANDOM_POTION:
-                message = "ランダムに効果";
+                message = "ランダムにポーション効果";
                 break;
             case HappeningConst.ADD_PLAYER_POISON:
                 message = "毒";
@@ -195,6 +198,9 @@ public class HappeningFactory {
                 break;
             case HappeningConst.PROHIBIT_WOMAN:
                 message = "女は男に近づくと炎上";
+                break;
+            case HappeningConst.CHANGE_ADVENTURE_MODE:
+                message = "アドベンチャーモード";
                 break;
         }
         return message;
