@@ -22,22 +22,23 @@ public class AddPlayerEffectHappening extends Happening {
 
     // TODO: ランダムポーションの時の挙動をなんとかする
     private PotionEffectType currentPotionEffectType;
+
     public void beginHappening(List<Player> players) {
         PotionEffect potionEffect = null;
         switch (super.getName()) {
             case HappeningConst.ADD_PLAYER_INVISIBLE:
-                potionEffect = new PotionEffect(PotionEffectType.INVISIBILITY, Config.happeningSwitchTime*20,10);
+                potionEffect = new PotionEffect(PotionEffectType.INVISIBILITY, Config.happeningSwitchTime * 20, 10);
                 break;
             case HappeningConst.ADD_PLAYER_LEVITATION:
-                potionEffect = new PotionEffect(PotionEffectType.LEVITATION, Config.happeningSwitchTime*20,10);
+                potionEffect = new PotionEffect(PotionEffectType.LEVITATION, Config.happeningSwitchTime * 20, 10);
                 break;
             case HappeningConst.ADD_PLAYER_BLINDNESS:
-                potionEffect = new PotionEffect(PotionEffectType.BLINDNESS, Config.happeningSwitchTime*20,1);
+                potionEffect = new PotionEffect(PotionEffectType.BLINDNESS, Config.happeningSwitchTime * 20, 1);
                 // ついでにMobも透明化する
-                for (int i = 0; i < Bukkit.getWorlds().size(); i++){
+                for (int i = 0; i < Bukkit.getWorlds().size(); i++) {
                     PotionEffect finalPotionEffect1 = potionEffect;
                     Bukkit.getWorlds().get(i).getEntities().forEach(e -> {
-                        if (!(e instanceof Mob))return;
+                        if (!(e instanceof Mob)) return;
 
                         ((Mob) e).addPotionEffect(finalPotionEffect1);
                     });
@@ -46,19 +47,19 @@ public class AddPlayerEffectHappening extends Happening {
             case HappeningConst.ADD_PLAYER_RANDOM_POTION:
                 Object[] effects = Arrays.stream(PotionEffectType.values()).toArray();
                 Object effect = effects[GameManager.rand.nextInt(effects.length)];
-                potionEffect = new PotionEffect((PotionEffectType) effect, Config.happeningSwitchTime*20,3);
+                potionEffect = new PotionEffect((PotionEffectType) effect, Config.happeningSwitchTime * 20, 3);
                 break;
             case HappeningConst.ADD_PLAYER_POISON:
-                potionEffect = new PotionEffect(PotionEffectType.POISON, Config.happeningSwitchTime*20,10);
+                potionEffect = new PotionEffect(PotionEffectType.POISON, Config.happeningSwitchTime * 20, 10);
                 break;
             case HappeningConst.ADD_PLAYER_MOVE_SPEED_UP:
-                potionEffect = new PotionEffect(PotionEffectType.SPEED, Config.happeningSwitchTime*20,10);
+                potionEffect = new PotionEffect(PotionEffectType.SPEED, Config.happeningSwitchTime * 20, 10);
                 break;
             case HappeningConst.ADD_PLAYER_MINING_SPEED_UP:
-                potionEffect = new PotionEffect(PotionEffectType.FAST_DIGGING, Config.happeningSwitchTime*20,3);
+                potionEffect = new PotionEffect(PotionEffectType.FAST_DIGGING, Config.happeningSwitchTime * 20, 3);
                 break;
             case HappeningConst.ADD_PLAYER_JUMP_POWER_UP:
-                potionEffect = new PotionEffect(PotionEffectType.JUMP, Config.happeningSwitchTime*20,10);
+                potionEffect = new PotionEffect(PotionEffectType.JUMP, Config.happeningSwitchTime * 20, 10);
                 break;
         }
         PotionEffect finalPotionEffect = potionEffect;
@@ -74,7 +75,7 @@ public class AddPlayerEffectHappening extends Happening {
         });
     }
 
-    public void beginHappeningOnLoginOrRespawn (Player player){
+    public void beginHappeningOnLoginOrRespawn(Player player) {
         List<Player> p = new ArrayList<>();
         p.add(player);
         beginHappening(p);

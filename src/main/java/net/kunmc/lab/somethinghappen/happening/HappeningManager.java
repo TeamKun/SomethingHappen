@@ -20,7 +20,7 @@ public class HappeningManager {
 
     private static Queue<String> filterHappeningQueue = new ArrayDeque<>();
 
-    public static void switchHappening(){
+    public static void switchHappening() {
         timer = 0;
         // 今持っている事件の処理を終了
         if (currentHappening != null) {
@@ -30,7 +30,7 @@ public class HappeningManager {
         // 次の事件を開始
         currentHappening = nextHappening;
         getHappeningTargetPlayers().forEach(p -> {
-            p.sendTitle("",currentHappening.getTitle(),1,20,1);
+            p.sendTitle("", currentHappening.getTitle(), 1, 20, 1);
         });
         currentHappening.beginHappening(getHappeningTargetPlayers());
         currentHappening.continueHappening();
@@ -45,14 +45,14 @@ public class HappeningManager {
         return ret;
     }
 
-    public static List<Player> getHappeningTargetPlayers(){
+    public static List<Player> getHappeningTargetPlayers() {
         return Bukkit.getOnlinePlayers().stream().collect(Collectors.toList());
     }
 
-    public static void setNextHappening () {
+    public static void setNextHappening() {
         List<String> happenings = new ArrayList<>();
         // あまり同じHappeningが続くと面白くないので、直近2回までのHappeningは起きないようにしておく
-        for(Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
+        for (Map.Entry<String, Boolean> happening : Config.happenings.entrySet()) {
             if (happening.getValue() && !filterHappeningQueue.contains(happening.getKey())) {
                 happenings.add(happening.getKey());
             }
@@ -67,7 +67,7 @@ public class HappeningManager {
         }
     }
 
-    public static void showNextHappening (){
+    public static void showNextHappening() {
         int time = getNextHappeningTime();
 
         TextComponent component = new TextComponent();
@@ -82,21 +82,21 @@ public class HappeningManager {
         });
     }
 
-    public static boolean updatedNextHappening(){
+    public static boolean updatedNextHappening() {
         return setNextHappening;
     }
 
-    public static boolean shouldShowNextHappening(){
+    public static boolean shouldShowNextHappening() {
         int time = getNextHappeningTime();
         if (Config.nextHappeningShowTime >= time) return true;
         return false;
     }
 
-    private static int getNextHappeningTime(){
-        return (Config.happeningSwitchTime * 20 - timer)/20;
+    private static int getNextHappeningTime() {
+        return (Config.happeningSwitchTime * 20 - timer) / 20;
     }
 
-    public static void incrementTimer (){
+    public static void incrementTimer() {
         timer++;
     }
 }

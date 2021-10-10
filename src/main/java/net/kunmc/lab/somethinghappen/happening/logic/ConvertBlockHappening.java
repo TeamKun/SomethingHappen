@@ -26,7 +26,7 @@ public class ConvertBlockHappening extends Happening {
                     double px = p.getLocation().getX();
                     double py = p.getLocation().getY();
                     double pz = p.getLocation().getZ();
-                    for (int x = Config.convertBlockRange -1; x <= Config.convertBlockRange; x++) {
+                    for (int x = Config.convertBlockRange - 1; x <= Config.convertBlockRange; x++) {
                         for (int y = Config.convertBlockRange - 1; y <= Config.convertBlockRange; y++) {
                             for (int z = Config.convertBlockRange - 1; z <= Config.convertBlockRange; z++) {
                                 double dist = Math.sqrt(x * x + y * y + z * z);

@@ -16,11 +16,11 @@ import java.util.List;
 
 /**
  * - 対応する事件
- *   - 'changeFootBlockRandom'
- *   - 'changeFootBlockMagma'
- *   - 'changeFootBlockTNT'
+ * - 'changeFootBlockRandom'
+ * - 'changeFootBlockMagma'
+ * - 'changeFootBlockTNT'
  */
-public class ChangeFootBlockHappening extends Happening{
+public class ChangeFootBlockHappening extends Happening {
 
     private BukkitTask task;
 
@@ -65,8 +65,8 @@ public class ChangeFootBlockHappening extends Happening{
         task.cancel();
     }
 
-    private void setRandomBlockData () {
-        for(Material material: Material.values()) {
+    private void setRandomBlockData() {
+        for (Material material : Material.values()) {
             if (material == Material.AIR || material == Material.END_PORTAL || material == Material.END_GATEWAY
                     || material == Material.NETHER_PORTAL
                     || !material.isBlock())
@@ -75,7 +75,7 @@ public class ChangeFootBlockHappening extends Happening{
         }
     }
 
-    private boolean shouldChangeBlock (Block block) {
+    private boolean shouldChangeBlock(Block block) {
         Material material = block.getType();
         if (material == Material.AIR || material == Material.WATER || material == Material.LAVA)
             return false;

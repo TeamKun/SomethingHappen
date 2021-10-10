@@ -8,7 +8,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-public class DieOnFootBlockHappening extends Happening{
+public class DieOnFootBlockHappening extends Happening {
 
     private BukkitTask task;
 
@@ -34,7 +34,7 @@ public class DieOnFootBlockHappening extends Happening{
         task.cancel();
     }
 
-    private boolean isDeathBlock(Block block){
+    private boolean isDeathBlock(Block block) {
         if (block.getType() == Material.DIRT ||
                 block.getType() == Material.GRASS_BLOCK ||
                 block.getType() == Material.NETHERRACK) {

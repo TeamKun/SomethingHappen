@@ -3,9 +3,9 @@ package net.kunmc.lab.somethinghappen.happening;
 import net.kunmc.lab.somethinghappen.happening.logic.*;
 
 public class HappeningFactory {
-    public static Happening createHappening(String name){
+    public static Happening createHappening(String name) {
         Happening happening = null;
-        switch (name){
+        switch (name) {
             case HappeningConst.SPAWN_PASSIVE_MOB:
             case HappeningConst.SPAWN_ZOMBIE:
             case HappeningConst.SPAWN_CLEEPER:
@@ -76,9 +76,9 @@ public class HappeningFactory {
         return happening;
     }
 
-    public static String getHappeningMessage(String name){
+    public static String getHappeningMessage(String name) {
         String message = "";
-        switch (name){
+        switch (name) {
             case HappeningConst.SPAWN_PASSIVE_MOB:
                 message = "パッシブモブ";
                 break;

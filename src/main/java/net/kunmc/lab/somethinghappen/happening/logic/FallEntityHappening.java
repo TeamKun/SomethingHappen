@@ -7,17 +7,20 @@ import net.kunmc.lab.somethinghappen.happening.HappeningConst;
 import net.kunmc.lab.somethinghappen.happening.HappeningManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Fireball;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 /**
  * - 対応する事件
- *   - 'fallAnvil'
- *   - 'fallSand'
- *   - 'fallArrow'
- *   - 'fallMeteor'
+ * - 'fallAnvil'
+ * - 'fallSand'
+ * - 'fallArrow'
+ * - 'fallMeteor'
  */
 public class FallEntityHappening extends Happening {
 
@@ -31,8 +34,8 @@ public class FallEntityHappening extends Happening {
         task = new BukkitRunnable() {
             @Override
             public void run() {
-               HappeningManager.getHappeningTargetPlayers().forEach(p -> {
-                   new BukkitRunnable() {
+                HappeningManager.getHappeningTargetPlayers().forEach(p -> {
+                    new BukkitRunnable() {
                         @Override
                         public void run() {
                             Location loc = p.getLocation();
@@ -45,15 +48,15 @@ public class FallEntityHappening extends Happening {
                                 num = 1;
 
                             for (int i = 0; i < num; i++) {
-                                Location spawnLocation = new Location(p.getWorld(), (int)x + 0.5 , (int)y, (int)z + 0.5);
+                                Location spawnLocation = new Location(p.getWorld(), (int) x + 0.5, (int) y, (int) z + 0.5);
                                 switch (FallEntityHappening.super.getName()) {
                                     case HappeningConst.FALL_ANVIL:
                                         FallingBlock anvilBlock = p.getWorld().spawnFallingBlock(spawnLocation, Material.ANVIL.createBlockData());
                                         anvilBlock.setDropItem(false);
                                         break;
                                     case HappeningConst.FALL_ARROW:
-                                        Arrow arrow = p.getWorld().spawnArrow(spawnLocation, new Vector(0,0,0),1,0);
-                                        arrow.setTicksLived(10*20);
+                                        Arrow arrow = p.getWorld().spawnArrow(spawnLocation, new Vector(0, 0, 0), 1, 0);
+                                        arrow.setTicksLived(10 * 20);
                                         break;
                                     case HappeningConst.FALL_SAND:
                                         FallingBlock sandBlock = p.getWorld().spawnFallingBlock(spawnLocation, Material.SAND.createBlockData());
@@ -64,7 +67,7 @@ public class FallEntityHappening extends Happening {
                                         Vector vector = loc.toVector().subtract(fireball.getLocation().toVector()).normalize();
                                         vector.multiply(0.5f);
                                         fireball.setDirection(vector);
-                                        fireball.setTicksLived(10*20);
+                                        fireball.setTicksLived(10 * 20);
                                         break;
                                 }
                             }

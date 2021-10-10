@@ -37,7 +37,7 @@ public class ProhibitPlayer extends Happening {
                         }
                     }
                 } else if (HappeningManager.currentHappening.getName().equals(HappeningConst.PROHIBIT_WOMAN)) {
-                    for (Player p: HappeningManager.getHappeningTargetPlayers()) {
+                    for (Player p : HappeningManager.getHappeningTargetPlayers()) {
                         String name = p.getName();
                         if (isMan(name)) {
                             burnTargetPlayerNames.add(p.getName());
@@ -48,13 +48,13 @@ public class ProhibitPlayer extends Happening {
                 System.out.println(procPlayerNames);
                 System.out.println(burnTargetPlayerNames);
 
-                for(String procPlayerName: procPlayerNames) {
+                for (String procPlayerName : procPlayerNames) {
                     Player procPlayer = Bukkit.getPlayer(procPlayerName);
                     if (procPlayer == null) continue;
                     double px = procPlayer.getLocation().getX();
                     double py = procPlayer.getLocation().getY();
                     double pz = procPlayer.getLocation().getZ();
-                    for(String burnTargetPlayerName: burnTargetPlayerNames){
+                    for (String burnTargetPlayerName : burnTargetPlayerNames) {
                         Player burnTargetPlayer = Bukkit.getPlayer(burnTargetPlayerName);
                         if (burnTargetPlayer == null) continue;
                         double opx = burnTargetPlayer.getLocation().getX();

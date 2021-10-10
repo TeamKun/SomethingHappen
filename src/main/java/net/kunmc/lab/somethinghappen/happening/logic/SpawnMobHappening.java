@@ -3,7 +3,6 @@ package net.kunmc.lab.somethinghappen.happening.logic;
 import net.kunmc.lab.somethinghappen.Config;
 import net.kunmc.lab.somethinghappen.game.GameManager;
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -12,14 +11,14 @@ import java.util.List;
 
 /**
  * - 対応する事件
- *   - 'spawnPassiveMob'
- *   - 'spawnZombie'
- *   - 'spawnCleeper'
- *   - 'spawnEnderman'
- *   - 'spawnBat'
+ * - 'spawnPassiveMob'
+ * - 'spawnZombie'
+ * - 'spawnCleeper'
+ * - 'spawnEnderman'
+ * - 'spawnBat'
  */
-public class SpawnMobHappening extends Happening{
-    public SpawnMobHappening (String name, String title) {
+public class SpawnMobHappening extends Happening {
+    public SpawnMobHappening(String name, String title) {
         super(name, title);
     }
 

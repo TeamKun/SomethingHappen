@@ -17,7 +17,7 @@ public class ProhibitWaterHappening extends Happening {
             @Override
             public void run() {
                 HappeningManager.getHappeningTargetPlayers().forEach(p -> {
-                    if (p.isInWater()){
+                    if (p.isInWater()) {
                         p.damage(1000);
                     }
                 });

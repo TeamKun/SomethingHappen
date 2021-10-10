@@ -9,11 +9,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlayerEventHandler implements Listener {
@@ -116,7 +117,8 @@ public class PlayerEventHandler implements Listener {
         HappeningManager.currentHappening.endPlayerHappening(event.getPlayer());
     }
 
-    @EventHandler public void onPlayerRespawn(PlayerRespawnEvent event){
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
         if (!GameManager.canEventProcess()) return;
         HappeningManager.currentHappening.beginHappeningOnLoginOrRespawn(event.getPlayer());
     }

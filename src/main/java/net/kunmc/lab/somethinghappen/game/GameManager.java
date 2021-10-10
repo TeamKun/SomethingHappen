@@ -2,10 +2,7 @@ package net.kunmc.lab.somethinghappen.game;
 
 import net.kunmc.lab.somethinghappen.happening.HappeningManager;
 
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
 
 public class GameManager {
     public static Random rand = new Random();
@@ -30,7 +27,7 @@ public class GameManager {
         RUNNING
     }
 
-    public static boolean canEventProcess(){
+    public static boolean canEventProcess() {
         if (GameManager.runningMode == GameManager.GameMode.NEUTRAL ||
                 HappeningManager.currentHappening == null)
             return false;

@@ -33,7 +33,7 @@ public class Config {
         happeningSwitchTime = config.getInt("happeningSwitchTime");
         nextHappeningShowTime = config.getInt("nextHappeningShowTime");
         List<String> tmpHappenings = config.getStringList("happening");
-        for (String happening: tmpHappenings) {
+        for (String happening : tmpHappenings) {
             happenings.put(happening, true);
         }
         spawnMobNum = config.getInt("spawnMobNum");

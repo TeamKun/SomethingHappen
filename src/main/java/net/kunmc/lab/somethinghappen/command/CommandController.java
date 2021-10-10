@@ -13,7 +13,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,7 +41,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                         args[1].equals(CommandConst.CONFIG_SPAWN_MOB_NUM) ||
                         args[1].equals(CommandConst.CONFIG_TELEPORT_RANGE)))) {
             completions.add("<数字>");
-        } else if (args.length == 2 && args[0].equals(CommandConst.SET_CONFIG)){
+        } else if (args.length == 2 && args[0].equals(CommandConst.SET_CONFIG)) {
             completions.addAll(Stream.of(
                     CommandConst.CONFIG_HAPPENING_SWITCH_TIME,
                     CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME,
@@ -55,29 +57,29 @@ public class CommandController implements CommandExecutor, TabCompleter {
                     CommandConst.CONFIG_OFF_HAPPENING)
                     .filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
         } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_ON_HAPPENING)) {
-            for(Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
+            for (Map.Entry<String, Boolean> happening : Config.happenings.entrySet()) {
                 if (!happening.getValue()) {
                     completions.add(happening.getKey());
                 }
             }
         } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_OFF_HAPPENING)) {
-            for(Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
+            for (Map.Entry<String, Boolean> happening : Config.happenings.entrySet()) {
                 if (happening.getValue()) {
                     completions.add(happening.getKey());
                 }
             }
-        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_ADD_WOMAN_PLAYER)){
+        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_ADD_WOMAN_PLAYER)) {
             completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
-                    .filter(e ->  !Config.womanPlayer.contains(e) && !Config.nonbinaryPlayer.contains(e))
+                    .filter(e -> !Config.womanPlayer.contains(e) && !Config.nonbinaryPlayer.contains(e))
                     .filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
-        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_ADD_NONBINARY_PLAYER)){
+        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_ADD_NONBINARY_PLAYER)) {
             completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
-                    .filter(e ->  !Config.womanPlayer.contains(e) && !Config.nonbinaryPlayer.contains(e))
+                    .filter(e -> !Config.womanPlayer.contains(e) && !Config.nonbinaryPlayer.contains(e))
                     .filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
-        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_REMOVE_WOMAN_PLAYER)){
-        completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
-                .filter(e -> Config.womanPlayer.contains(e))
-                .filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
+        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_REMOVE_WOMAN_PLAYER)) {
+            completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+                    .filter(e -> Config.womanPlayer.contains(e))
+                    .filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
         } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_REMOVE_NONBINARY_PLAYER)) {
             completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
                     .filter(e -> Config.nonbinaryPlayer.contains(e))
@@ -105,7 +107,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                     sender.sendMessage(DecolationConst.RED + "すでに開始しています");
                     return true;
                 }
-                if (!checkArgsNum(sender,args.length, 1)) return true;
+                if (!checkArgsNum(sender, args.length, 1)) return true;
                 GameManager.controller(GameManager.GameMode.RUNNING);
                 sender.sendMessage(DecolationConst.GREEN + "開始します");
                 break;
@@ -248,7 +250,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                         }
                         break;
                     case CommandConst.CONFIG_REMOVE_WOMAN_PLAYER:
-                        if (!checkArgsNum(sender,args.length, 3)) return true;
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
                         try {
                             players = Bukkit.selectEntities(sender, args[2]);
                         } catch (Exception e) {
@@ -269,7 +271,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                         }
                         break;
                     case CommandConst.CONFIG_REMOVE_NONBINARY_PLAYER:
-                        if (!checkArgsNum(sender,args.length, 3)) return true;
+                        if (!checkArgsNum(sender, args.length, 3)) return true;
                         try {
                             players = Bukkit.selectEntities(sender, args[2]);
                         } catch (Exception e) {
@@ -290,7 +292,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                         }
                         break;
                 }
-               break;
+                break;
             case CommandConst.SHOW_STATUS:
                 if (args.length != 1) {
                     sender.sendMessage(DecolationConst.RED + "引数が不要なコマンドです");
@@ -298,7 +300,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                 }
                 sender.sendMessage(DecolationConst.GREEN + "設定値一覧");
                 List<String> happenings = new ArrayList<>();
-                for (Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
+                for (Map.Entry<String, Boolean> happening : Config.happenings.entrySet()) {
                     if (happening.getValue()) happenings.add(happening.getKey());
                 }
                 String prefix = "  ";
@@ -391,7 +393,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
         return num;
     }
 
-    private boolean checkArgsNum(CommandSender sender, int argsLength, int validLength){
+    private boolean checkArgsNum(CommandSender sender, int argsLength, int validLength) {
         if (argsLength != validLength) {
             sender.sendMessage(DecolationConst.RED + "引数の数が不正です");
             return false;

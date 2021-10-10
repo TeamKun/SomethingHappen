@@ -1,18 +1,16 @@
 package net.kunmc.lab.somethinghappen.happening.logic;
 
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 
 import java.util.List;
 
 /**
  * - 対応する事件
- *   - 'clearHotBarItem'
- *   - 'transHotBarItem'
+ * - 'clearHotBarItem'
+ * - 'transHotBarItem'
  */
 public class ChangeHotbarHappening extends Happening {
     public ChangeHotbarHappening(String name, String title) {
