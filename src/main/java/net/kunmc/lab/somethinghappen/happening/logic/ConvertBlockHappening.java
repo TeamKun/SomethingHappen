@@ -41,7 +41,7 @@ public class ConvertBlockHappening extends Happening {
 
                                 if (HappeningManager.currentHappening.getName().equals(HappeningConst.BE_SPONGE_BODY)) {
                                     if (currentBlock.getType() == Material.WATER || currentBlock.getType() == Material.LAVA ||
-                                    currentBlock.getType() == Material.SEAGRASS || currentBlock.getType() == Material.TALL_SEAGRASS) {
+                                            currentBlock.getType() == Material.SEAGRASS || currentBlock.getType() == Material.TALL_SEAGRASS) {
                                         currentBlock.setBlockData(Material.AIR.createBlockData());
                                     }
                                 } else if (HappeningManager.currentHappening.getName().equals(HappeningConst.CONVERT_BLOCK_TO_STONE)) {
