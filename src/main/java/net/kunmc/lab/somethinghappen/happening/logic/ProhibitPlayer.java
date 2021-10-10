@@ -45,9 +45,6 @@ public class ProhibitPlayer extends Happening {
                     }
                     procPlayerNames.addAll(Config.womanPlayer);
                 }
-                System.out.println(procPlayerNames);
-                System.out.println(burnTargetPlayerNames);
-
                 for (String procPlayerName : procPlayerNames) {
                     Player procPlayer = Bukkit.getPlayer(procPlayerName);
                     if (procPlayer == null) continue;
@@ -66,7 +63,6 @@ public class ProhibitPlayer extends Happening {
                         double absZ = Math.abs(diffZ);
 
                         if (Math.abs(py - opy) < 1.0 && absX < 1.0 && absZ < 1.0) {
-                            System.out.println(burnTargetPlayer.getName());
                             burnTargetPlayer.setFireTicks(100);
                         }
                     }

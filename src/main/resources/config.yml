@@ -1,8 +1,8 @@
 happeningSwitchTime: 20
 nextHappeningShowTime: 10
 spawnMobNum: 10
-fallBlockNum: 4
-teleportRange: 300
+fallBlockNum: 3
+teleportRange: 500
 convertBlockRange: 4
 womanPlayer:
   - 23zi_51hun
@@ -67,10 +67,6 @@ happening:
   - 'prohibitWater'
   - 'prohibitJump'
   - 'convertBlockToStone'
+  - 'beSpongeBody'
   - 'prohibitMan'
   - 'prohibitWoman'
-# TODO: 候補
-# プレイヤーの歩いた後ろが燃える
-# プレイヤーの歩いた後ろから水が出る
-# 特定アイテム所持で炎上
-# 体がスポンジになる

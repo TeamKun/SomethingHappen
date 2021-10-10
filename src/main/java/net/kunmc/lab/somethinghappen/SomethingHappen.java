@@ -2,6 +2,7 @@ package net.kunmc.lab.somethinghappen;
 
 import net.kunmc.lab.somethinghappen.command.CommandConst;
 import net.kunmc.lab.somethinghappen.command.CommandController;
+import net.kunmc.lab.somethinghappen.event.EntityEventHandler;
 import net.kunmc.lab.somethinghappen.event.PlayerEventHandler;
 import net.kunmc.lab.somethinghappen.task.Task;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +22,7 @@ public final class SomethingHappen extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         getServer().getPluginManager().registerEvents(new PlayerEventHandler(), plugin);
+        getServer().getPluginManager().registerEvents(new EntityEventHandler(), plugin);
         task = new Task(plugin).runTaskTimer(this, 0, 1);
         Config.loadConfig(false);
         getCommand(CommandConst.MAIN).setExecutor(new CommandController());

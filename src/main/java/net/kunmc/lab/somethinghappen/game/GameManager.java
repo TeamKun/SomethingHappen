@@ -1,5 +1,6 @@
 package net.kunmc.lab.somethinghappen.game;
 
+import net.kunmc.lab.somethinghappen.Config;
 import net.kunmc.lab.somethinghappen.happening.HappeningManager;
 
 import java.util.Random;
@@ -14,10 +15,11 @@ public class GameManager {
 
         switch (runningMode) {
             case NEUTRAL:
+                HappeningManager.currentHappening = null;
                 break;
             case RUNNING:
+                HappeningManager.timer = (Config.happeningSwitchTime - Config.nextHappeningShowTime) * 20;
                 HappeningManager.setNextHappening();
-                HappeningManager.switchHappening();
                 break;
         }
     }

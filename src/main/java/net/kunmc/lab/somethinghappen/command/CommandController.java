@@ -29,6 +29,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
             completions.addAll(Stream.of(
                     CommandConst.START,
                     CommandConst.STOP,
+                    CommandConst.SET_NEXT_HAPPENING,
                     CommandConst.RELOAD_CONFIG,
                     CommandConst.SET_CONFIG,
                     CommandConst.SHOW_STATUS)
@@ -84,8 +85,13 @@ public class CommandController implements CommandExecutor, TabCompleter {
             completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
                     .filter(e -> Config.nonbinaryPlayer.contains(e))
                     .filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
+        } else if (args.length == 2 && args[0].equals(CommandConst.SET_NEXT_HAPPENING)) {
+            for (Map.Entry<String, Boolean> happening : Config.happenings.entrySet()) {
+                if (happening.getValue()) {
+                    completions.add(happening.getKey());
+                }
+            }
         }
-
         return completions;
     }
 
@@ -122,6 +128,13 @@ public class CommandController implements CommandExecutor, TabCompleter {
                 }
                 GameManager.controller(GameManager.GameMode.NEUTRAL);
                 sender.sendMessage(DecolationConst.GREEN + "ブロック透過化終了、可視化します");
+                break;
+            case CommandConst.SET_NEXT_HAPPENING:
+                HappeningManager.setNextHappening(args[1]);
+                if (HappeningManager.nextHappening == null) {
+                    sender.sendMessage(DecolationConst.RED + "存在しないHappeningです");
+                }
+                sender.sendMessage(DecolationConst.GREEN + "次のHappeningを" + HappeningManager.nextHappening.getName() + "にセットしました");
                 break;
             case CommandConst.RELOAD_CONFIG:
                 if (args.length != 1) {
@@ -315,6 +328,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                 sender.sendMessage(String.format("%snonbinaryPlayer: %s", prefix, Config.nonbinaryPlayer));
                 if (GameManager.canEventProcess()) {
                     sender.sendMessage(String.format("%s現在のハプニング: ", prefix) + HappeningManager.currentHappening.getTitle());
+                    sender.sendMessage(String.format("%s次のハプニング: ", prefix) + HappeningManager.nextHappening.getTitle());
                 }
                 break;
             default:

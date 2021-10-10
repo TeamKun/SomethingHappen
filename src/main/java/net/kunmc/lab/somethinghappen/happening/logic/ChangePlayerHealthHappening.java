@@ -13,8 +13,8 @@ public class ChangePlayerHealthHappening extends Happening {
 
     public void beginHappening(List<Player> players) {
         players.forEach(p -> {
-            p.setMaxHealth(2);
-            p.setHealth(2);
+            p.setMaxHealth(1);
+            p.setHealth(1);
         });
     }
 

@@ -37,6 +37,7 @@ public class HappeningConst {
     public final static String PROHIBIT_WATER = "prohibitWater";
     public final static String PROHIBIT_JUMP = "prohibitJump";
     public final static String CONVERT_BLOCK_TO_STONE = "convertBlockToStone";
+    public final static String BE_SPONGE_BODY = "beSpongeBody";
     public final static String PROHIBIT_MAN = "prohibitMan";
     public final static String PROHIBIT_WOMAN = "prohibitWoman";
 }

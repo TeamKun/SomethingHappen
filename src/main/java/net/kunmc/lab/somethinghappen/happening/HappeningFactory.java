@@ -63,6 +63,7 @@ public class HappeningFactory {
                 happening = new ProhibitWaterHappening(name, getHappeningMessage(name));
                 break;
             case HappeningConst.CONVERT_BLOCK_TO_STONE:
+            case HappeningConst.BE_SPONGE_BODY:
                 happening = new ConvertBlockHappening(name, getHappeningMessage(name));
                 break;
             case HappeningConst.PROHIBIT_MAN:
@@ -182,7 +183,10 @@ public class HappeningFactory {
                 message = "ジャンプすると死亡";
                 break;
             case HappeningConst.CONVERT_BLOCK_TO_STONE:
-                message = "周囲石化";
+                message = "周囲ブロック石化";
+                break;
+            case HappeningConst.BE_SPONGE_BODY:
+                message = "体がスポンジ化";
                 break;
             case HappeningConst.PROHIBIT_MAN:
                 message = "男は女に近づくと炎上";

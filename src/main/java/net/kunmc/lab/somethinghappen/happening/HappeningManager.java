@@ -6,6 +6,7 @@ import net.kunmc.lab.somethinghappen.happening.logic.Happening;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -18,6 +19,7 @@ public class HappeningManager {
 
     private static boolean setNextHappening = false;
 
+    // 同じHappeningが続くと面白くないので、直近2回までのHappeningは起きないようにしておく
     private static Queue<String> filterHappeningQueue = new ArrayDeque<>();
 
     public static void switchHappening() {
@@ -29,7 +31,7 @@ public class HappeningManager {
 
         // 次の事件を開始
         currentHappening = nextHappening;
-        getHappeningTargetPlayers().forEach(p -> {
+        Bukkit.getOnlinePlayers().stream().forEach(p -> {
             p.sendTitle("", currentHappening.getTitle(), 1, 20, 1);
         });
         currentHappening.beginHappening(getHappeningTargetPlayers());
@@ -46,12 +48,12 @@ public class HappeningManager {
     }
 
     public static List<Player> getHappeningTargetPlayers() {
-        return Bukkit.getOnlinePlayers().stream().collect(Collectors.toList());
+        return Bukkit.getOnlinePlayers().stream()
+                .filter(e -> !e.getPlayer().isDead() && e.getPlayer().getGameMode() != GameMode.SPECTATOR).collect(Collectors.toList());
     }
 
     public static void setNextHappening() {
         List<String> happenings = new ArrayList<>();
-        // あまり同じHappeningが続くと面白くないので、直近2回までのHappeningは起きないようにしておく
         for (Map.Entry<String, Boolean> happening : Config.happenings.entrySet()) {
             if (happening.getValue() && !filterHappeningQueue.contains(happening.getKey())) {
                 happenings.add(happening.getKey());
@@ -65,6 +67,11 @@ public class HappeningManager {
         if (filterHappeningQueue.size() > 2) {
             filterHappeningQueue.poll();
         }
+    }
+
+    public static void setNextHappening(String happeningName) {
+        nextHappening = HappeningFactory.createHappening(happeningName);
+        setNextHappening = true;
     }
 
     public static void showNextHappening() {

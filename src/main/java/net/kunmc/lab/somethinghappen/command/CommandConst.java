@@ -6,8 +6,7 @@ public class CommandConst {
 
     public final static String START = "start";
     public final static String STOP = "stop";
-    public final static String ADD = "add";
-    public final static String REMOVE = "remove";
+    public final static String SET_NEXT_HAPPENING = "setNextHappening";
 
     // コンフィグ系コマンド
     public final static String SET_CONFIG = "setConfig";
