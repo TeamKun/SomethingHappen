@@ -45,7 +45,7 @@ public class FallEntityHappening extends Happening {
                             for (int i = 0; i < num; i++) {
                                 Location loc = p.getLocation();
                                 double x = loc.getX() + GameManager.rand.nextInt(4) - 2;
-                                double y = loc.getY() + 20;
+                                double y = loc.getY() + 20 + GameManager.rand.nextInt(4) - 2;
                                 double z = loc.getZ() + GameManager.rand.nextInt(4) - 2;
 
                                 Location spawnLocation = new Location(p.getWorld(), (int) x + 0.5, (int) y, (int) z + 0.5);
