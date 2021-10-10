@@ -30,7 +30,6 @@ public class PlayerEventHandler implements Listener {
         if (!GameManager.canEventProcess()) return;
 
         // すでに誰かに殺されたプレイヤーは処理しない
-        System.out.println(SyncDeathHappening.players + " " + event.getEntity().getName());
         if (SyncDeathHappening.players.contains(event.getEntity().getName())) {
             SyncDeathHappening.players.remove(event.getEntity().getName());
             return;
