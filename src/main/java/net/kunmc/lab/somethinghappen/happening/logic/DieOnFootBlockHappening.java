@@ -1,14 +1,10 @@
 package net.kunmc.lab.somethinghappen.happening.logic;
 
-import net.kunmc.lab.somethinghappen.Somethinghappen;
-import net.kunmc.lab.somethinghappen.game.GameManager;
-import net.kunmc.lab.somethinghappen.happening.HappeningConst;
+import net.kunmc.lab.somethinghappen.SomethingHappen;
 import net.kunmc.lab.somethinghappen.happening.HappeningManager;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -31,7 +27,7 @@ public class DieOnFootBlockHappening extends Happening{
                     }
                 });
             }
-        }.runTaskTimer(Somethinghappen.getPlugin(), 0, 5);
+        }.runTaskTimer(SomethingHappen.getPlugin(), 0, 5);
     }
 
     public void endHappening() {

@@ -20,7 +20,7 @@ public class Config {
 
     public static void loadConfig(boolean isReload) {
 
-        Somethinghappen plugin = Somethinghappen.getPlugin();
+        SomethingHappen plugin = SomethingHappen.getPlugin();
 
         plugin.saveDefaultConfig();
 

@@ -21,7 +21,16 @@ public class Happening {
     public void continueHappening (){
     }
 
+    // 事件終了時に行う処理
     public void endHappening (){
+    }
+
+    // ログイン時やリスポーン時に再度発生させたい処理
+    public void beginHappeningOnLoginOrRespawn (Player player){
+    }
+
+    // ログアウト時など個別のプレイヤーに対して終了処理を適用したい場合に実行する処理
+    public void endPlayerHappening (Player player){
 
     }
 

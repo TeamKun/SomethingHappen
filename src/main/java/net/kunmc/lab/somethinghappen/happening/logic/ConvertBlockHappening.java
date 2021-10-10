@@ -1,17 +1,15 @@
 package net.kunmc.lab.somethinghappen.happening.logic;
 
 import net.kunmc.lab.somethinghappen.Config;
-import net.kunmc.lab.somethinghappen.Somethinghappen;
+import net.kunmc.lab.somethinghappen.SomethingHappen;
 import net.kunmc.lab.somethinghappen.happening.HappeningManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.checkerframework.checker.units.qual.C;
 
 public class ConvertBlockHappening extends Happening {
     private BukkitTask task;
@@ -46,7 +44,7 @@ public class ConvertBlockHappening extends Happening {
                     }
                 });
             }
-        }.runTaskTimer(Somethinghappen.getPlugin(), 0, 5);
+        }.runTaskTimer(SomethingHappen.getPlugin(), 0, 5);
     }
 
     public void endHappening() {

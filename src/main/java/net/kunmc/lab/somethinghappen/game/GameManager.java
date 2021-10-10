@@ -21,6 +21,8 @@ public class GameManager {
             case NEUTRAL:
                 break;
             case RUNNING:
+                HappeningManager.setNextHappening();
+                HappeningManager.switchHappening();
                 break;
         }
     }

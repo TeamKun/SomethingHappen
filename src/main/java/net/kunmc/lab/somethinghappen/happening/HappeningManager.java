@@ -8,9 +8,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class HappeningManager {
@@ -20,8 +18,9 @@ public class HappeningManager {
 
     private static boolean setNextHappening = false;
 
+    private static Queue<String> filterHappeningQueue = new ArrayDeque<>();
+
     public static void switchHappening(){
-        System.out.println("switchHappening");
         timer = 0;
         // 今持っている事件の処理を終了
         if (currentHappening != null) {
@@ -31,7 +30,7 @@ public class HappeningManager {
         // 次の事件を開始
         currentHappening = nextHappening;
         getHappeningTargetPlayers().forEach(p -> {
-            p.sendTitle(currentHappening.getTitle(),"",1,20,1);
+            p.sendTitle("",currentHappening.getTitle(),1,20,1);
         });
         currentHappening.beginHappening(getHappeningTargetPlayers());
         currentHappening.continueHappening();
@@ -47,14 +46,14 @@ public class HappeningManager {
     }
 
     public static List<Player> getHappeningTargetPlayers(){
-        return Bukkit.getOnlinePlayers().stream().collect(Collectors.toList());
-        //return Bukkit.getOnlinePlayers().stream().filter(e -> GameManager.player.contains(e.getUniqueId())).collect(Collectors.toList());
+        return Bukkit.getOnlinePlayers().stream().filter(e -> GameManager.player.contains(e.getUniqueId())).collect(Collectors.toList());
     }
 
     public static void setNextHappening () {
         List<String> happenings = new ArrayList<>();
+        // あまり同じHappeningが続くと面白くないので、直近2回までのHappeningは起きないようにしておく
         for(Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
-            if (happening.getValue()) {
+            if (happening.getValue() && !filterHappeningQueue.contains(happening.getKey())) {
                 happenings.add(happening.getKey());
             }
         }
@@ -62,13 +61,21 @@ public class HappeningManager {
         Object happeningName = happeningNames[GameManager.rand.nextInt(happeningNames.length)];
         nextHappening = HappeningFactory.createHappening((String) happeningName);
         setNextHappening = true;
+        filterHappeningQueue.add(nextHappening.getName());
+        if (filterHappeningQueue.size() > 2) {
+            filterHappeningQueue.poll();
+        }
     }
 
     public static void showNextHappening (){
         int time = getNextHappeningTime();
 
         TextComponent component = new TextComponent();
-        component.setText(nextHappening.getTitle() + "発生まで " + time);
+        if (time > 0) {
+            component.setText(nextHappening.getTitle() + " 発生まで " + time);
+        } else {
+            component.setText("");
+        }
 
         Bukkit.getOnlinePlayers().stream().forEach(p -> {
             p.sendMessage(ChatMessageType.ACTION_BAR, component);
@@ -81,7 +88,7 @@ public class HappeningManager {
 
     public static boolean shouldShowNextHappening(){
         int time = getNextHappeningTime();
-        if (Config.nextHappeningShowTime <= time) return true;
+        if (Config.nextHappeningShowTime >= time) return true;
         return false;
     }
 

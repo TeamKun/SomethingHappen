@@ -23,11 +23,8 @@ public class Task extends BukkitRunnable {
             HappeningManager.switchHappening();
         }
 
-        if (HappeningManager.updatedNextHappening()) setNextHappening();
-
-        if (HappeningManager.shouldShowNextHappening()) {
-            HappeningManager.showNextHappening();
-        }
+        if (!HappeningManager.updatedNextHappening()) setNextHappening();
+        if (HappeningManager.shouldShowNextHappening()) HappeningManager.showNextHappening();
 
         HappeningManager.incrementTimer();
     }

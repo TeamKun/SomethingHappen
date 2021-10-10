@@ -1,7 +1,7 @@
 package net.kunmc.lab.somethinghappen.happening.logic;
 
 import net.kunmc.lab.somethinghappen.Config;
-import net.kunmc.lab.somethinghappen.Somethinghappen;
+import net.kunmc.lab.somethinghappen.SomethingHappen;
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
 import net.kunmc.lab.somethinghappen.happening.HappeningManager;
 import org.bukkit.Bukkit;
@@ -72,7 +72,7 @@ public class ProhibitPlayer extends Happening {
                     }
                 }
             }
-        }.runTaskTimer(Somethinghappen.getPlugin(), 0, 2);
+        }.runTaskTimer(SomethingHappen.getPlugin(), 0, 2);
     }
 
     public void endHappening() {

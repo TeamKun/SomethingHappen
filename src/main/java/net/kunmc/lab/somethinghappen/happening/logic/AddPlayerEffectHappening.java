@@ -10,10 +10,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class AddPlayerEffectHappening extends Happening {
+
     public AddPlayerEffectHappening(String name, String title) {
         super(name, title);
     }
@@ -26,8 +28,12 @@ public class AddPlayerEffectHappening extends Happening {
             case HappeningConst.ADD_PLAYER_INVISIBLE:
                 potionEffect = new PotionEffect(PotionEffectType.INVISIBILITY, Config.happeningSwitchTime*20,10);
                 break;
+            case HappeningConst.ADD_PLAYER_LEVITATION:
+                potionEffect = new PotionEffect(PotionEffectType.LEVITATION, Config.happeningSwitchTime*20,10);
+                break;
             case HappeningConst.ADD_PLAYER_BLINDNESS:
                 potionEffect = new PotionEffect(PotionEffectType.BLINDNESS, Config.happeningSwitchTime*20,1);
+                // ついでにMobも透明化する
                 for (int i = 0; i < Bukkit.getWorlds().size(); i++){
                     PotionEffect finalPotionEffect1 = potionEffect;
                     Bukkit.getWorlds().get(i).getEntities().forEach(e -> {
@@ -49,7 +55,7 @@ public class AddPlayerEffectHappening extends Happening {
                 potionEffect = new PotionEffect(PotionEffectType.SPEED, Config.happeningSwitchTime*20,10);
                 break;
             case HappeningConst.ADD_PLAYER_MINING_SPEED_UP:
-                potionEffect = new PotionEffect(PotionEffectType.FAST_DIGGING, Config.happeningSwitchTime*20,10);
+                potionEffect = new PotionEffect(PotionEffectType.FAST_DIGGING, Config.happeningSwitchTime*20,3);
                 break;
             case HappeningConst.ADD_PLAYER_JUMP_POWER_UP:
                 potionEffect = new PotionEffect(PotionEffectType.JUMP, Config.happeningSwitchTime*20,10);
@@ -64,7 +70,17 @@ public class AddPlayerEffectHappening extends Happening {
 
     public void endHappening() {
         HappeningManager.getHappeningTargetPlayers().forEach(p -> {
-            p.removePotionEffect(currentPotionEffectType);
+            endPlayerHappening(p);
         });
+    }
+
+    public void beginHappeningOnLoginOrRespawn (Player player){
+        List<Player> p = new ArrayList<>();
+        p.add(player);
+        beginHappening(p);
+    }
+
+    public void endPlayerHappening(Player player) {
+        player.removePotionEffect(currentPotionEffectType);
     }
 }

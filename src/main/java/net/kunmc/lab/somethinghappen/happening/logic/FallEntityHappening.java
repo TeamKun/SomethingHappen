@@ -1,19 +1,16 @@
 package net.kunmc.lab.somethinghappen.happening.logic;
 
 import net.kunmc.lab.somethinghappen.Config;
-import net.kunmc.lab.somethinghappen.Somethinghappen;
+import net.kunmc.lab.somethinghappen.SomethingHappen;
 import net.kunmc.lab.somethinghappen.game.GameManager;
 import net.kunmc.lab.somethinghappen.happening.HappeningConst;
 import net.kunmc.lab.somethinghappen.happening.HappeningManager;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-
-import java.util.List;
 
 /**
  * - 対応する事件
@@ -72,10 +69,10 @@ public class FallEntityHappening extends Happening {
                                 }
                             }
                         }
-                    }.runTask(Somethinghappen.getPlugin());
+                    }.runTask(SomethingHappen.getPlugin());
                 });
             }
-        }.runTaskTimerAsynchronously(Somethinghappen.getPlugin(), 0, 20);
+        }.runTaskTimerAsynchronously(SomethingHappen.getPlugin(), 0, 20);
     }
 
     public void endHappening() {

@@ -25,6 +25,7 @@ public class HappeningFactory {
                 happening = new ChangeFootBlockHappening(name, getHappeningMessage(name));
                 break;
             case HappeningConst.ADD_PLAYER_INVISIBLE:
+            case HappeningConst.ADD_PLAYER_LEVITATION:
             case HappeningConst.ADD_PLAYER_BLINDNESS:
             case HappeningConst.ADD_PLAYER_RANDOM_POTION:
             case HappeningConst.ADD_PLAYER_POISON:
@@ -79,19 +80,19 @@ public class HappeningFactory {
         String message = "";
         switch (name){
             case HappeningConst.SPAWN_PASSIVE_MOB:
-                message = "パッシブモブ発生";
+                message = "パッシブモブ";
                 break;
             case HappeningConst.SPAWN_ZOMBIE:
-                message = "ゾンビ発生";
+                message = "ゾンビ";
                 break;
             case HappeningConst.SPAWN_CLEEPER:
-                message = "クリーパー発生";
+                message = "クリーパー";
                 break;
             case HappeningConst.SPAWN_ENDERMAN:
-                message = "エンダーマン発生";
+                message = "エンダーマン";
                 break;
             case HappeningConst.SPAWN_BAT:
-                message = "Bat発生";
+                message = "Bat";
                 break;
             case HappeningConst.FALL_ANVIL:
                 message = "金床の雨";
@@ -115,16 +116,19 @@ public class HappeningFactory {
                 message = "足元がTNTにチェンジ";
                 break;
             case HappeningConst.ADD_PLAYER_INVISIBLE:
-                message = "透明化発生";
+                message = "透明化";
+                break;
+            case HappeningConst.ADD_PLAYER_LEVITATION:
+                message = "浮遊";
                 break;
             case HappeningConst.ADD_PLAYER_BLINDNESS:
-                message = "盲目発生";
+                message = "盲目";
                 break;
             case HappeningConst.ADD_PLAYER_RANDOM_POTION:
-                message = "ランダムに効果発生";
+                message = "ランダムに効果";
                 break;
             case HappeningConst.ADD_PLAYER_POISON:
-                message = "毒発生";
+                message = "毒";
                 break;
             case HappeningConst.ADD_PLAYER_MOVE_SPEED_UP:
                 message = "移動速度アップ";
@@ -145,13 +149,13 @@ public class HappeningFactory {
                 message = "ホットバーアイテム消滅";
                 break;
             case HappeningConst.TRANS_HOTBAR_ITEM:
-                message = "ホットバーに鉄装備発生";
+                message = "ホットバーに鉄装備";
                 break;
             case HappeningConst.TELEPORT_PLAYER:
                 message = "どこかにテレポート";
                 break;
             case HappeningConst.CHANGE_PLAYER_DIMENSION:
-                message = "次元移動発生";
+                message = "次元移動";
                 break;
             case HappeningConst.DIE_ON_FOOT_BLOCK:
                 message = "草、土、ネザーラックの上に立つと死亡";
@@ -163,22 +167,22 @@ public class HappeningFactory {
                 message = "一人死亡で全員死亡";
                 break;
             case HappeningConst.SYNC_DEATH_RANDOM:
-                message = "一人死亡でランダムに一人死亡";
+                message = "一人死亡でもう一人死亡";
                 break;
             case HappeningConst.BE_VEAGAN:
-                message = "ヴィーガン化発生";
+                message = "ヴィーガン化";
                 break;
             case HappeningConst.BE_CARNIVORE:
-                message = "肉食主義化発生";
+                message = "肉食主義化";
                 break;
             case HappeningConst.PROHIBIT_WATER:
-                message = "水・水源禁止";
+                message = "水源・水流に入ると死亡";
                 break;
             case HappeningConst.PROHIBIT_JUMP:
-                message = "ジャンプ禁止";
+                message = "ジャンプすると死亡";
                 break;
             case HappeningConst.CONVERT_BLOCK_TO_STONE:
-                message = "周囲石化発生";
+                message = "周囲石化";
                 break;
             case HappeningConst.PROHIBIT_MAN:
                 message = "男は女に近づくと炎上";

@@ -1,7 +1,12 @@
 name: Somethinghappen
 version: ${project.version}
-main: net.kunmc.lab.somethinghappen.Somethinghappen
+main: net.kunmc.lab.somethinghappen.SomethingHappen
 api-version: 1.16
 prefix: SomethingHappen
 authors: [ Pone0301 ]
 description: 一定時間毎に何かが起こるプラグイン
+commands:
+  sh:
+    description: SomethingHappen Plugin
+    usage: /<command>
+    permission: op

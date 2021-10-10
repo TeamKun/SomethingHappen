@@ -5,6 +5,7 @@ import net.kunmc.lab.somethinghappen.happening.HappeningManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChangePlayerHealthHappening extends Happening{
@@ -21,7 +22,17 @@ public class ChangePlayerHealthHappening extends Happening{
 
     public void endHappening() {
         HappeningManager.getHappeningTargetPlayers().forEach(p -> {
-            p.setMaxHealth(20);
+            endPlayerHappening(p);
         });
+    }
+
+    public void beginHappeningOnLoginOrRespawn (Player player){
+        List<Player> p = new ArrayList<>();
+        p.add(player);
+        beginHappening(p);
+    }
+
+    public void endPlayerHappening(Player player) {
+        player.setMaxHealth(20);
     }
 }

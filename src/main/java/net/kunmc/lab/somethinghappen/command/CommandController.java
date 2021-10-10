@@ -33,13 +33,29 @@ public class CommandController implements CommandExecutor, TabCompleter {
                     CommandConst.SET_CONFIG,
                     CommandConst.SHOW_STATUS)
                     .filter(e -> e.startsWith(args[0])).collect(Collectors.toList()));
-        } else if (args.length == 3 && args[2].equals(CommandConst.SET_CONFIG) ||
-                (args[3].equals(CommandConst.CONFIG_HAPPENING_SWITCH_TIME) ||
-                        args[3].equals(CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME) ||
-                        args[3].equals(CommandConst.CONFIG_FALL_BLOCK_NUM) ||
-                        args[3].equals(CommandConst.CONFIG_CONVERT_BLOCK_RANGE) ||
-                        args[3].equals(CommandConst.CONFIG_SPAWN_MOB_NUM))) {
+        } else if (args.length == 3 && args[0].equals(CommandConst.SET_CONFIG) &&
+                ((args[1].equals(CommandConst.CONFIG_HAPPENING_SWITCH_TIME) ||
+                        args[1].equals(CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME) ||
+                        args[1].equals(CommandConst.CONFIG_FALL_BLOCK_NUM) ||
+                        args[1].equals(CommandConst.CONFIG_CONVERT_BLOCK_RANGE) ||
+                        args[1].equals(CommandConst.CONFIG_SPAWN_MOB_NUM) ||
+                        args[1].equals(CommandConst.CONFIG_TELEPORT_RANGE)))) {
             completions.add("<数字>");
+        } else if (args.length == 2 && args[0].equals(CommandConst.SET_CONFIG)){
+            completions.addAll(Stream.of(
+                    CommandConst.CONFIG_HAPPENING_SWITCH_TIME,
+                    CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME,
+                    CommandConst.CONFIG_FALL_BLOCK_NUM,
+                    CommandConst.CONFIG_CONVERT_BLOCK_RANGE,
+                    CommandConst.CONFIG_SPAWN_MOB_NUM,
+                    CommandConst.CONFIG_TELEPORT_RANGE,
+                    CommandConst.CONFIG_ADD_WOMAN_PLAYER,
+                    CommandConst.CONFIG_ADD_NONBINARY_PLAYER,
+                    CommandConst.CONFIG_REMOVE_WOMAN_PLAYER,
+                    CommandConst.CONFIG_REMOVE_NONBINARY_PLAYER,
+                    CommandConst.CONFIG_ON_HAPPENING,
+                    CommandConst.CONFIG_OFF_HAPPENING)
+                    .filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
         } else if (args.length == 2 && args[0].equals(CommandConst.ADD)) {
             List<String> tmpCompletions = new ArrayList<>();
             tmpCompletions.addAll(Arrays.asList("@a", "@p", "@r", "@s"));
@@ -52,27 +68,36 @@ public class CommandController implements CommandExecutor, TabCompleter {
             completions.addAll(tmpCompletions.stream()
                     .filter(e -> (Bukkit.getPlayer(e) != null && GameManager.getPlayers().contains(Bukkit.getPlayer(e).getUniqueId())) || e.startsWith("@"))
                     .filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
-        } else if (args.length == 3 && args[2].equals(CommandConst.CONFIG_ON_HAPPENING)) {
-            for(Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
-                if (happening.getValue()) {
-                    completions.add(happening.getKey());
-                }
-            }
-        } else if (args.length == 3 && args[2].equals(CommandConst.CONFIG_OFF_HAPPENING)) {
+        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_ON_HAPPENING)) {
             for(Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
                 if (!happening.getValue()) {
                     completions.add(happening.getKey());
                 }
             }
-        } else if (args.length == 3 && args[2].equals(CommandConst.CONFIG_ADD_WOMAN_PLAYER)){
+        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_OFF_HAPPENING)) {
+            for(Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
+                if (happening.getValue()) {
+                    completions.add(happening.getKey());
+                }
+            }
+        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_ADD_WOMAN_PLAYER)){
+            completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+                    .filter(e ->  !Config.womanPlayer.contains(e) && !Config.nonbinaryPlayer.contains(e))
+                    .filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
+        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_ADD_NONBINARY_PLAYER)){
+            completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+                    .filter(e ->  !Config.womanPlayer.contains(e) && !Config.nonbinaryPlayer.contains(e))
+                    .filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
+        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_REMOVE_WOMAN_PLAYER)){
+        completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
+                .filter(e -> Config.womanPlayer.contains(e))
+                .filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
+        } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_REMOVE_NONBINARY_PLAYER)) {
             completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
                     .filter(e -> Config.nonbinaryPlayer.contains(e))
-                    .filter(e -> e.startsWith(args[3])).collect(Collectors.toList()));
-        } else if (args.length == 3 && args[2].equals(CommandConst.CONFIG_ADD_NONBINARY_PLAYER)){
-            completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
-                    .filter(e -> Config.womanPlayer.contains(e))
-                    .filter(e -> e.startsWith(args[3])).collect(Collectors.toList()));
+                    .filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
         }
+
         return completions;
     }
 
@@ -159,6 +184,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 Config.loadConfig(true);
+                break;
             case CommandConst.SET_CONFIG:
                 switch (args[1]) {
                     case CommandConst.CONFIG_HAPPENING_SWITCH_TIME:
@@ -198,7 +224,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                         ret = validateNum(sender, args[2]);
                         if (ret == -1) return true;
 
-                        Config.convertBlockRange = ret;
+                        Config.fallBlockNum = ret;
                         sender.sendMessage(DecolationConst.GREEN + CommandConst.CONFIG_FALL_BLOCK_NUM + "の値を" + Config.fallBlockNum + "に変更しました");
                         break;
                     case CommandConst.CONFIG_TELEPORT_RANGE:
@@ -277,6 +303,48 @@ public class CommandController implements CommandExecutor, TabCompleter {
                             }
                         }
                         break;
+                    case CommandConst.CONFIG_REMOVE_WOMAN_PLAYER:
+                        if (!checkArgsNum(sender,args.length, 3)) return true;
+                        try {
+                            players = Bukkit.selectEntities(sender, args[2]);
+                        } catch (Exception e) {
+                            sender.sendMessage(DecolationConst.RED + "存在しないプレイヤー名です");
+                            return true;
+                        }
+                        if (players.isEmpty() || args[2].equals("@e")) {
+                            sender.sendMessage(DecolationConst.RED + "存在しないまたはサーバに接続していないプレイヤー名です");
+                            return true;
+                        }
+                        for (Entity p : players) {
+                            if (!Config.womanPlayer.contains(p.getUniqueId())) {
+                                sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加されていません");
+                            } else {
+                                Config.womanPlayer.remove(p.getUniqueId());
+                                sender.sendMessage(DecolationConst.GREEN + p.getName() + "を削除しました");
+                            }
+                        }
+                        break;
+                    case CommandConst.CONFIG_REMOVE_NONBINARY_PLAYER:
+                        if (!checkArgsNum(sender,args.length, 3)) return true;
+                        try {
+                            players = Bukkit.selectEntities(sender, args[2]);
+                        } catch (Exception e) {
+                            sender.sendMessage(DecolationConst.RED + "存在しないプレイヤー名です");
+                            return true;
+                        }
+                        if (players.isEmpty() || args[2].equals("@e")) {
+                            sender.sendMessage(DecolationConst.RED + "存在しないまたはサーバに接続していないプレイヤー名です");
+                            return true;
+                        }
+                        for (Entity p : players) {
+                            if (!Config.nonbinaryPlayer.contains(p.getUniqueId())) {
+                                sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加されていません");
+                            } else {
+                                Config.nonbinaryPlayer.remove(p.getUniqueId());
+                                sender.sendMessage(DecolationConst.GREEN + p.getName() + "を削除しました");
+                            }
+                        }
+                        break;
                 }
                break;
             case CommandConst.SHOW_STATUS:
@@ -297,15 +365,15 @@ public class CommandController implements CommandExecutor, TabCompleter {
                 }
                 String prefix = "  ";
                 sender.sendMessage(String.format("%saddedPlayer: ", prefix) + playerList);
-                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_HAPPENING_SWITCH_TIME, Config.happeningSwitchTime));
-                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME, Config.nextHappeningShowTime));
-                sender.sendMessage(String.format("%shappenings : ", prefix, Config.happeningSwitchTime) + happenings);
-                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_CONVERT_BLOCK_RANGE, Config.convertBlockRange));
-                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_FALL_BLOCK_NUM, Config.fallBlockNum));
-                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_TELEPORT_RANGE, Config.teleportRange));
-                sender.sendMessage(String.format("%s%s: ", prefix, CommandConst.CONFIG_SPAWN_MOB_NUM, Config.spawnMobNum));
-                sender.sendMessage(String.format("%swomanPlayer: ", prefix, Config.womanPlayer));
-                sender.sendMessage(String.format("%snonbinaryPlayer: ", prefix, Config.nonbinaryPlayer));
+                sender.sendMessage(String.format("%s%s: %s", prefix, CommandConst.CONFIG_HAPPENING_SWITCH_TIME, Config.happeningSwitchTime));
+                sender.sendMessage(String.format("%s%s: %s", prefix, CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME, Config.nextHappeningShowTime));
+                sender.sendMessage(String.format("%shappenings: ", prefix, Config.happeningSwitchTime) + happenings);
+                sender.sendMessage(String.format("%s%s: %s", prefix, CommandConst.CONFIG_CONVERT_BLOCK_RANGE, Config.convertBlockRange));
+                sender.sendMessage(String.format("%s%s: %s", prefix, CommandConst.CONFIG_FALL_BLOCK_NUM, Config.fallBlockNum));
+                sender.sendMessage(String.format("%s%s: %s", prefix, CommandConst.CONFIG_TELEPORT_RANGE, Config.teleportRange));
+                sender.sendMessage(String.format("%s%s: %s", prefix, CommandConst.CONFIG_SPAWN_MOB_NUM, Config.spawnMobNum));
+                sender.sendMessage(String.format("%swomanPlayer: %s", prefix, Config.womanPlayer));
+                sender.sendMessage(String.format("%snonbinaryPlayer: %s", prefix, Config.nonbinaryPlayer));
                 if (GameManager.canEventProcess()) {
                     sender.sendMessage(String.format("%s現在のハプニング: ", prefix) + HappeningManager.currentHappening.getTitle());
                 }

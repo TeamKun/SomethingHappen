@@ -1,17 +1,19 @@
 package net.kunmc.lab.somethinghappen;
 
+import net.kunmc.lab.somethinghappen.command.CommandConst;
+import net.kunmc.lab.somethinghappen.command.CommandController;
 import net.kunmc.lab.somethinghappen.event.PlayerEventHandler;
 import net.kunmc.lab.somethinghappen.task.Task;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-public final class Somethinghappen extends JavaPlugin {
-    private static Somethinghappen plugin;
+public final class SomethingHappen extends JavaPlugin {
+    private static SomethingHappen plugin;
 
     // 全体を管理するタイマー
     private BukkitTask task;
 
-    public static Somethinghappen getPlugin() {
+    public static SomethingHappen getPlugin() {
         return plugin;
     }
 
@@ -21,13 +23,14 @@ public final class Somethinghappen extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerEventHandler(), plugin);
         task = new Task(plugin).runTaskTimer(this, 0, 1);
         Config.loadConfig(false);
+        getCommand(CommandConst.MAIN).setExecutor(new CommandController());
 
-        getLogger().info("Somethinghappen is enabled");
+        getLogger().info("SomethingHappen is enabled");
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        getLogger().info("Somethinghappen Plugin is disabled");
+        getLogger().info("SomethingHappen Plugin is disabled");
     }
 }

@@ -9,19 +9,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlayerEventHandler implements Listener {
     /**
      * - 'syncDeathEveryone'
      * - 'syncDeathRandom'
+     *
      * @param event
      */
     @EventHandler
-    public void onDeath(PlayerDeathEvent event){
+    public void onDeath(PlayerDeathEvent event) {
         if (!GameManager.canEventProcess()) return;
 
         if (HappeningManager.currentHappening.getName().equals(HappeningConst.SYNC_DEATH_RANDOM)) {
@@ -29,7 +32,7 @@ public class PlayerEventHandler implements Listener {
                     .filter(e -> !e.isDead()).collect(Collectors.toList()).toArray();
             Object player = players[GameManager.rand.nextInt(players.length)];
             ((Player) player).damage(1000, event.getEntity());
-        } else if (HappeningManager.currentHappening.getName().equals(HappeningConst.SYNC_DEATH_EVERYONE)){
+        } else if (HappeningManager.currentHappening.getName().equals(HappeningConst.SYNC_DEATH_EVERYONE)) {
             HappeningManager.getHappeningTargetPlayers().stream()
                     .filter(e -> !e.isDead()).forEach(p -> {
                 p.damage(1000, event.getEntity());
@@ -38,7 +41,7 @@ public class PlayerEventHandler implements Listener {
     }
 
     @EventHandler
-    public void onItemConsume(PlayerItemConsumeEvent event){
+    public void onItemConsume(PlayerItemConsumeEvent event) {
         if (!GameManager.canEventProcess()) return;
         ItemStack item = event.getItem();
 
@@ -46,26 +49,26 @@ public class PlayerEventHandler implements Listener {
             event.setCancelled(true);
 
             Player p = event.getPlayer();
-            item.setAmount(item.getAmount()-1);
+            item.setAmount(item.getAmount() - 1);
             p.getInventory().setItemInMainHand(item);
             p.damage(4);
-            p.setFoodLevel(Math.max(0, p.getFoodLevel()-4));
+            p.setFoodLevel(Math.max(0, p.getFoodLevel() - 4));
         } else if (HappeningManager.currentHappening.getName().equals(HappeningConst.BE_CARNIVORE) && !isLifeFood(item)) {
             event.setCancelled(true);
 
             Player p = event.getPlayer();
-            item.setAmount(item.getAmount()-1);
+            item.setAmount(item.getAmount() - 1);
             p.getInventory().setItemInMainHand(item);
             p.damage(4);
-            p.setFoodLevel(Math.max(0, p.getFoodLevel()-4));
+            p.setFoodLevel(Math.max(0, p.getFoodLevel() - 4));
         }
     }
 
     @EventHandler
-    public void onJump(PlayerJumpEvent event){
+    public void onJump(PlayerJumpEvent event) {
         if (!GameManager.canEventProcess()) return;
         Player p = event.getPlayer();
-        if (p.isInWater() || HappeningManager.currentHappening.getName().equals(HappeningConst.PROHIBIT_JUMP)) {
+        if (p.isInWater() || !HappeningManager.currentHappening.getName().equals(HappeningConst.PROHIBIT_JUMP)) {
             return;
         }
         p.damage(1000);
@@ -82,7 +85,7 @@ public class PlayerEventHandler implements Listener {
                 type == Material.MUTTON ||
                 type == Material.COOKED_PORKCHOP ||
                 type == Material.PORKCHOP ||
-                type == Material.COOKED_RABBIT||
+                type == Material.COOKED_RABBIT ||
                 type == Material.RABBIT ||
                 type == Material.COOKED_COD ||
                 type == Material.COD ||
@@ -99,5 +102,22 @@ public class PlayerEventHandler implements Listener {
         }
 
         return false;
+    }
+
+    @EventHandler
+    public void onPlayerLogin(PlayerJoinEvent event) {
+        if (!GameManager.canEventProcess()) return;
+        HappeningManager.currentHappening.beginHappeningOnLoginOrRespawn(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerLogout(PlayerQuitEvent event) {
+        if (!GameManager.canEventProcess()) return;
+        HappeningManager.currentHappening.endPlayerHappening(event.getPlayer());
+    }
+
+    @EventHandler public void onPlayerRespawn(PlayerRespawnEvent event){
+        if (!GameManager.canEventProcess()) return;
+        HappeningManager.currentHappening.beginHappeningOnLoginOrRespawn(event.getPlayer());
     }
 }

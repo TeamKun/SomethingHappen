@@ -15,6 +15,7 @@ public class HappeningConst {
     public final static String CHANGE_FOOT_BLOCK_MAGMA = "changeFootBlockMagma";
     public final static String CHANGE_FOOT_BLOCK_TNT = "changeFootBlockTNT";
     public final static String ADD_PLAYER_INVISIBLE = "addPlayerInvisible";
+    public final static String ADD_PLAYER_LEVITATION = "addPlayerLevitation";
     public final static String ADD_PLAYER_BLINDNESS = "addPlayerBlindness";
     public final static String ADD_PLAYER_RANDOM_POTION = "addPlayerRandomPotion";
     public final static String ADD_PLAYER_POISON = "addPlayerPoison";

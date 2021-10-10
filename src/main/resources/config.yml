@@ -1,7 +1,7 @@
 happeningSwitchTime: 20
 nextHappeningShowTime: 10
 spawnMobNum: 10
-fallBlockNum: 2
+fallBlockNum: 4
 teleportRange: 300
 convertBlockRange: 4
 womanPlayer:
@@ -45,6 +45,7 @@ happening:
   - 'changeFootBlockMagma'
   - 'changeFootBlockTNT'
   - 'addPlayerInvisible'
+  - 'addPlayerLevitation'
   - 'addPlayerBlindness'
   - 'addPlayerRandomPotion'
   - 'addPlayerMoveSpeedUp'
