@@ -10,8 +10,6 @@ import java.util.UUID;
 public class GameManager {
     public static Random rand = new Random();
     public static GameMode runningMode = GameMode.NEUTRAL;
-    // 事件の対象プレイヤー
-    public static Set<UUID> player = new HashSet<>();
 
     public static void controller(GameMode runningMode) {
         // モードを設定
@@ -30,10 +28,6 @@ public class GameManager {
     public enum GameMode {
         NEUTRAL,
         RUNNING
-    }
-
-    public static Set<UUID> getPlayers(){
-        return player;
     }
 
     public static boolean canEventProcess(){

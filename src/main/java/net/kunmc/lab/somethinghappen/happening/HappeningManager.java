@@ -46,7 +46,7 @@ public class HappeningManager {
     }
 
     public static List<Player> getHappeningTargetPlayers(){
-        return Bukkit.getOnlinePlayers().stream().filter(e -> GameManager.player.contains(e.getUniqueId())).collect(Collectors.toList());
+        return Bukkit.getOnlinePlayers().stream().collect(Collectors.toList());
     }
 
     public static void setNextHappening () {

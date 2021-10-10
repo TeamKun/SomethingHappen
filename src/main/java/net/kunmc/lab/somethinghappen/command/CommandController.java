@@ -27,8 +27,6 @@ public class CommandController implements CommandExecutor, TabCompleter {
             completions.addAll(Stream.of(
                     CommandConst.START,
                     CommandConst.STOP,
-                    CommandConst.ADD,
-                    CommandConst.REMOVE,
                     CommandConst.RELOAD_CONFIG,
                     CommandConst.SET_CONFIG,
                     CommandConst.SHOW_STATUS)
@@ -55,18 +53,6 @@ public class CommandController implements CommandExecutor, TabCompleter {
                     CommandConst.CONFIG_REMOVE_NONBINARY_PLAYER,
                     CommandConst.CONFIG_ON_HAPPENING,
                     CommandConst.CONFIG_OFF_HAPPENING)
-                    .filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
-        } else if (args.length == 2 && args[0].equals(CommandConst.ADD)) {
-            List<String> tmpCompletions = new ArrayList<>();
-            tmpCompletions.addAll(Arrays.asList("@a", "@p", "@r", "@s"));
-            tmpCompletions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
-            completions.addAll(tmpCompletions.stream().filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
-        } else if (args.length == 2 && args[0].equals(CommandConst.REMOVE)) {
-            List<String> tmpCompletions = new ArrayList<>();
-            tmpCompletions.addAll(Arrays.asList("@a", "@p", "@r", "@s"));
-            tmpCompletions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
-            completions.addAll(tmpCompletions.stream()
-                    .filter(e -> (Bukkit.getPlayer(e) != null && GameManager.getPlayers().contains(Bukkit.getPlayer(e).getUniqueId())) || e.startsWith("@"))
                     .filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
         } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_ON_HAPPENING)) {
             for(Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
@@ -134,49 +120,6 @@ public class CommandController implements CommandExecutor, TabCompleter {
                 }
                 GameManager.controller(GameManager.GameMode.NEUTRAL);
                 sender.sendMessage(DecolationConst.GREEN + "ブロック透過化終了、可視化します");
-                break;
-            case CommandConst.ADD:
-                if (!checkArgsNum(sender,args.length, 2)) return true;
-                List<Entity> players;
-                try {
-                    players = Bukkit.selectEntities(sender, args[1]);
-                } catch (Exception e) {
-                    sender.sendMessage(DecolationConst.RED + "存在しないプレイヤー名です");
-                    return true;
-                }
-                if (players.isEmpty() || args[1].equals("@e")) {
-                    sender.sendMessage(DecolationConst.RED + "存在しないまたはサーバに接続していないプレイヤー名です");
-                    return true;
-                }
-                for (Entity p : players) {
-                    if (GameManager.getPlayers().contains(p.getUniqueId())) {
-                        sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加済みです");
-                    } else {
-                        GameManager.getPlayers().add(p.getUniqueId());
-                        sender.sendMessage(DecolationConst.GREEN + p.getName() + "を追加しました");
-                    }
-                }
-                break;
-            case CommandConst.REMOVE:
-                if (!checkArgsNum(sender,args.length, 2)) return true;
-                try {
-                    players = Bukkit.selectEntities(sender, args[1]);
-                } catch (Exception e) {
-                    sender.sendMessage(DecolationConst.RED + "存在しないプレイヤー名です");
-                    return true;
-                }
-                if (players.isEmpty() || args[1].equals("@e")) {
-                    sender.sendMessage(DecolationConst.RED + "存在しないまたはサーバに接続していないプレイヤー名です");
-                    return true;
-                }
-                for (Entity p : players) {
-                    if (!GameManager.getPlayers().contains(p.getUniqueId())) {
-                        sender.sendMessage(DecolationConst.AQUA + p.getName() + "は追加されていません");
-                    } else {
-                        GameManager.getPlayers().remove(p.getUniqueId());
-                        sender.sendMessage(DecolationConst.GREEN + p.getName() + "を削除しました");
-                    }
-                }
                 break;
             case CommandConst.RELOAD_CONFIG:
                 if (args.length != 1) {
@@ -258,6 +201,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                         Config.happenings.put(args[2], false);
                         break;
                     case CommandConst.CONFIG_ADD_WOMAN_PLAYER:
+                        List<Entity> players;
                         if (!checkArgsNum(sender, args.length, 3)) return true;
                         try {
                             players = Bukkit.selectEntities(sender, args[2]);
@@ -353,18 +297,11 @@ public class CommandController implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 sender.sendMessage(DecolationConst.GREEN + "設定値一覧");
-                List<String> playerList = new ArrayList();
-                for (UUID id : GameManager.getPlayers()) {
-                    if (Bukkit.getPlayer(id) != null) {
-                        playerList.add(Bukkit.getPlayer(id).getName());
-                    }
-                }
                 List<String> happenings = new ArrayList<>();
                 for (Map.Entry<String, Boolean> happening: Config.happenings.entrySet()) {
                     if (happening.getValue()) happenings.add(happening.getKey());
                 }
                 String prefix = "  ";
-                sender.sendMessage(String.format("%saddedPlayer: ", prefix) + playerList);
                 sender.sendMessage(String.format("%s%s: %s", prefix, CommandConst.CONFIG_HAPPENING_SWITCH_TIME, Config.happeningSwitchTime));
                 sender.sendMessage(String.format("%s%s: %s", prefix, CommandConst.CONFIG_NEXT_HAPPENING_SHOW_TIME, Config.nextHappeningShowTime));
                 sender.sendMessage(String.format("%shappenings: ", prefix, Config.happeningSwitchTime) + happenings);
@@ -395,12 +332,6 @@ public class CommandController implements CommandExecutor, TabCompleter {
         sender.sendMessage(String.format("%s%s"
                 , usagePrefix, CommandConst.STOP));
         sender.sendMessage(String.format("%s終了", descPrefix));
-        sender.sendMessage(String.format("%s%s <Player名|@a等>"
-                , usagePrefix, CommandConst.ADD));
-        sender.sendMessage(String.format("%s事件の対象になるユーザを追加", descPrefix));
-        sender.sendMessage(String.format("%s%s <Player名|@a等>"
-                , usagePrefix, CommandConst.REMOVE));
-        sender.sendMessage(String.format("%saddコマンドで追加したユーザを削除", descPrefix));
         sender.sendMessage(String.format("%s%s %s <number>"
                 , usagePrefix, CommandConst.SET_CONFIG, CommandConst.CONFIG_HAPPENING_SWITCH_TIME));
         sender.sendMessage(String.format("%sHappeningの切り替え間隔(秒)", descPrefix));
