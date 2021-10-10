@@ -58,17 +58,21 @@ public class CommandController implements CommandExecutor, TabCompleter {
                     CommandConst.CONFIG_OFF_HAPPENING)
                     .filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
         } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_ON_HAPPENING)) {
+            List<String> tmpCompletion = new ArrayList<>();
             for (Map.Entry<String, Boolean> happening : Config.happenings.entrySet()) {
                 if (!happening.getValue()) {
-                    completions.add(happening.getKey());
+                    tmpCompletion.add(happening.getKey());
                 }
             }
+            completions.addAll(tmpCompletion.stream().filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
         } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_OFF_HAPPENING)) {
+            List<String> tmpCompletion = new ArrayList<>();
             for (Map.Entry<String, Boolean> happening : Config.happenings.entrySet()) {
                 if (happening.getValue()) {
-                    completions.add(happening.getKey());
+                    tmpCompletion.add(happening.getKey());
                 }
             }
+            completions.addAll(tmpCompletion.stream().filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
         } else if (args.length == 3 && args[1].equals(CommandConst.CONFIG_ADD_WOMAN_PLAYER)) {
             completions.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName)
                     .filter(e -> !Config.womanPlayer.contains(e) && !Config.nonbinaryPlayer.contains(e))
@@ -86,11 +90,13 @@ public class CommandController implements CommandExecutor, TabCompleter {
                     .filter(e -> Config.nonbinaryPlayer.contains(e))
                     .filter(e -> e.startsWith(args[2])).collect(Collectors.toList()));
         } else if (args.length == 2 && args[0].equals(CommandConst.SET_NEXT_HAPPENING)) {
+            List<String> tmpCompletion = new ArrayList<>();
             for (Map.Entry<String, Boolean> happening : Config.happenings.entrySet()) {
                 if (happening.getValue()) {
-                    completions.add(happening.getKey());
+                    tmpCompletion.add(happening.getKey());
                 }
             }
+            completions.addAll(tmpCompletion.stream().filter(e -> e.startsWith(args[1])).collect(Collectors.toList()));
         }
         return completions;
     }

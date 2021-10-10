@@ -38,6 +38,8 @@ public class TeleportPlayerHappening extends Happening {
                 }
                 location.setWorld(Bukkit.getWorld(getNextDimension(p.getWorld().getName())));
                 p.teleport(location);
+                // 一度目のテレポートはネザーとオーバーワールド間での座標変換（8倍される？）があるので、もう一度やる
+                p.teleport(location);
                 p.playSound(location, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
             }
         });

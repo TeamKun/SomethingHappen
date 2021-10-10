@@ -58,7 +58,7 @@ public class AddPlayerEffectHappening extends Happening {
                 potionEffect = new PotionEffect(PotionEffectType.SPEED, Config.happeningSwitchTime * 20, 10);
                 break;
             case HappeningConst.ADD_PLAYER_MINING_SPEED_UP:
-                potionEffect = new PotionEffect(PotionEffectType.FAST_DIGGING, Config.happeningSwitchTime * 20, 8);
+                potionEffect = new PotionEffect(PotionEffectType.FAST_DIGGING, Config.happeningSwitchTime * 20, 2);
                 break;
             case HappeningConst.ADD_PLAYER_JUMP_POWER_UP:
                 potionEffect = new PotionEffect(PotionEffectType.JUMP, Config.happeningSwitchTime * 20, 10);
