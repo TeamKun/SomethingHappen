@@ -73,8 +73,8 @@ public class HappeningFactory {
                 happening = new ProhibitPlayer(name, getHappeningMessage(name));
                 break;
             default:
-                // TODO 何もしない出来事を返すようにしておくか検討
-                happening = new SpawnMobHappening(name, getHappeningMessage(name));
+                // 想定しない入力の場合は適当に返す
+                happening = new SpawnMobHappening(HappeningConst.SPAWN_PASSIVE_MOB, getHappeningMessage(HappeningConst.SPAWN_PASSIVE_MOB));
         }
         return happening;
     }

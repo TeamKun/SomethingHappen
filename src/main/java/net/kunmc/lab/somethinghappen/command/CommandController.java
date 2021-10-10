@@ -130,10 +130,11 @@ public class CommandController implements CommandExecutor, TabCompleter {
                 sender.sendMessage(DecolationConst.GREEN + "終了します");
                 break;
             case CommandConst.SET_NEXT_HAPPENING:
-                HappeningManager.setNextHappening(args[1]);
-                if (HappeningManager.nextHappening == null) {
+                if (!Config.happenings.containsKey(args[1])) {
                     sender.sendMessage(DecolationConst.RED + "存在しないHappeningです");
+                    return true;
                 }
+                HappeningManager.setNextHappening(args[1]);
                 sender.sendMessage(DecolationConst.GREEN + "次のHappeningを" + HappeningManager.nextHappening.getName() + "にセットしました");
                 break;
             case CommandConst.RELOAD_CONFIG:
