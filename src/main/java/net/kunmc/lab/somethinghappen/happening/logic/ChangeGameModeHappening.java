@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChangeGameModeHappening extends Happening{
+public class ChangeGameModeHappening extends Happening {
     public ChangeGameModeHappening(String name, String title) {
         super(name, title);
     }

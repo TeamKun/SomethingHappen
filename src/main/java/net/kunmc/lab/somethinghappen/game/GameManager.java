@@ -15,7 +15,7 @@ public class GameManager {
 
         switch (runningMode) {
             case NEUTRAL:
-                if (HappeningManager.currentHappening!=null)
+                if (HappeningManager.currentHappening != null)
                     HappeningManager.currentHappening.endHappening();
                 HappeningManager.currentHappening = null;
                 break;

@@ -55,7 +55,6 @@ public class FallEntityHappening extends Happening {
                                         break;
                                     case HappeningConst.FALL_ARROW:
                                         Arrow arrow = p.getWorld().spawnArrow(spawnLocation, new Vector(0, 0, 0), 1, 0);
-                                        arrow.setTicksLived(10 * 20);
                                         break;
                                     case HappeningConst.FALL_SAND:
                                         spawnLocation.getBlock().setBlockData(Material.SAND.createBlockData());
