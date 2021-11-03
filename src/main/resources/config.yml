@@ -5,7 +5,7 @@ fallBlockNum: 3
 teleportRange: 500
 convertBlockRange: 4
 womanPlayer:
-  - 23zi_51hun
+  - 23zi_52hun
   - _hinana_
   - akenn1549
   - BALjirooo
@@ -17,7 +17,6 @@ womanPlayer:
   - kono_a
   - n0r41nu
   - norunoru315
-  - odisan_0723
   - Osaaaaa
   - rosec_pin
   - SAKIchan07
@@ -26,11 +25,11 @@ womanPlayer:
   - Yaci56
   - Yanyaa
   - YOSHIKO__CHAN__
-  - onexttt0301
 nonbinaryPlayer:
   - syakaijin_4869
   - Fnyantory
   - penny515
+  - odisan_0723
 happening:
   - 'spawnPassiveMob'
   - 'spawnZombie'
