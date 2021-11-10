@@ -211,6 +211,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                             sender.sendMessage(DecolationConst.RED + "存在しないHappeningです");
                         if (Config.happenings.get(args[2])) sender.sendMessage(DecolationConst.AQUA + "すでにONになっています");
                         Config.happenings.put(args[2], true);
+                        sender.sendMessage(DecolationConst.GREEN + args[2] + "をONにしました");
                         break;
                     case CommandConst.CONFIG_OFF_HAPPENING:
                         if (!checkArgsNum(sender, args.length, 3)) return true;
@@ -218,6 +219,7 @@ public class CommandController implements CommandExecutor, TabCompleter {
                             sender.sendMessage(DecolationConst.RED + "存在しないHappeningです");
                         if (!Config.happenings.get(args[2])) sender.sendMessage(DecolationConst.AQUA + "すでにOFFになっています");
                         Config.happenings.put(args[2], false);
+                        sender.sendMessage(DecolationConst.GREEN + args[2] + "をOFFにしました");
                         break;
                     case CommandConst.CONFIG_ADD_WOMAN_PLAYER:
                         List<Entity> players;
