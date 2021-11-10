@@ -32,6 +32,7 @@ public class Config {
 
         happeningSwitchTime = config.getInt("happeningSwitchTime");
         nextHappeningShowTime = config.getInt("nextHappeningShowTime");
+        happenings.clear();
         List<String> tmpHappenings = config.getStringList("happening");
         for (String happening : tmpHappenings) {
             happenings.put(happening, true);
