@@ -107,10 +107,6 @@ public class CommandController implements CommandExecutor, TabCompleter {
             sendUsage(sender);
             return true;
         }
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("このコマンドはゲーム内からのみ実行できます");
-            return true;
-        }
 
         String commandName = args[0];
         switch (commandName) {
